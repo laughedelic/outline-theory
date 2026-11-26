@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outline Golf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Same design system as the other explainers in this series. The phone is blue (--view), the laptop amber
+   (--hidden). Evidence tags run from solid (we ran it) to dashed (we applied a paper's rule). */
+:root {
+  --bg: #FFFFFF;
+  --surface: #F5F6F8;
+  --ink: #1A1E26;
+  --muted: #5B6371;
+  --rule: #E1E4E9;
+  --view: #2F52C4;
+  --view-soft: #E7ECFA;
+  --hidden: #A35F00;
+  --hidden-soft: #FAEBD2;
+  --ok: #1B7444;
+  --ok-soft: #DFF2E6;
+  --bad: #B0232B;
+  --bad-soft: #FAE3E4;
+  --lost: #7C8594;
+  --lost-soft: #E9EBEF;
+  --stray: #7A3FA3;
+  --stray-soft: #F0E6F7;
+  --d0: #3B6FD4;
+  --d1: #1F9E88;
+  --d2: #C7961B;
+  --d3: #D6602A;
+  --d4: #A8264C;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151B; --surface: #1A1E26; --ink: #E5E7EB; --muted: #9AA2AE; --rule: #2A303A;
+    --view: #93ABFF; --view-soft: #1D2744; --hidden: #F0B45A; --hidden-soft: #3A2B12;
+    --ok: #63CC90; --ok-soft: #14301F; --bad: #F2848A; --bad-soft: #3B1B1E; --lost: #8C95A5; --lost-soft: #262B34; --stray: #C79BE8; --stray-soft: #2E1F3A; --d0: #7FA2FF; --d1: #4CCDB2; --d2: #E8BE4A; --d3: #F28A55; --d4: #E86B93; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151B; --surface: #1A1E26; --ink: #E5E7EB; --muted: #9AA2AE; --rule: #2A303A;
+  --view: #93ABFF; --view-soft: #1D2744; --hidden: #F0B45A; --hidden-soft: #3A2B12;
+  --ok: #63CC90; --ok-soft: #14301F; --bad: #F2848A; --bad-soft: #3B1B1E; --lost: #8C95A5; --lost-soft: #262B34; --stray: #C79BE8; --stray-soft: #2E1F3A; --d0: #7FA2FF; --d1: #4CCDB2; --d2: #E8BE4A; --d3: #F28A55; --d4: #E86B93; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 36px 80px; }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.12; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 700; letter-spacing: -0.015em; }
+h2 { font-size: 1.75rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+.lede { font-size: 1.25rem; line-height: 1.55; }
+header.top { display: grid; gap: 16px; margin-bottom: 28px; }
+.stack { display: grid; gap: 16px; }
+section.chapter { display: grid; gap: 18px; padding-top: 56px; margin-top: 56px; border-top: 1px solid var(--rule); }
+.num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--view); letter-spacing: 0.04em; }
+code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+em.term { font-style: normal; font-weight: 600; border-bottom: 1.5px solid var(--view); }
+.cite { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
+blockquote { margin: 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--rule); font-style: italic; }
+blockquote .cite { font-style: normal; white-space: nowrap; }
+.aside { font-size: 0.95rem; background: var(--surface); border-radius: 10px; padding: 14px 18px; display: grid; gap: 8px; }
+.aside h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.for-us { background: var(--view-soft); }
+.for-us h3 { color: var(--view); }
+.legend { font-size: 0.85rem; color: var(--muted); }
+
+/* Devices and evidence tags */
+.dev { font: 600 0.85em var(--font-display); padding: 0 7px; border-radius: 5px; white-space: nowrap; }
+.dev.a { background: var(--view-soft); color: var(--view); }
+.dev.b { background: var(--hidden-soft); color: var(--hidden); }
+.tag { font: 600 0.68rem var(--font-mono); letter-spacing: 0.03em; padding: 1px 7px; border-radius: 999px; border: 1.5px solid var(--ink); white-space: nowrap; vertical-align: 1px; }
+.tag.measured { background: var(--ink); color: var(--bg); }
+.tag.traced { background: var(--bg); color: var(--ink); }
+.tag.reported { background: var(--view-soft); color: var(--view); border-color: var(--view); }
+.tag.inferred { background: var(--bg); color: var(--muted); border: 1.5px dashed var(--muted); }
+.key { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px 18px; font-size: 0.88rem; background: var(--surface); border-radius: 10px; padding: 14px 18px; }
+.key div { display: grid; gap: 4px; justify-items: start; }
+.short { background: var(--surface); border-radius: 12px; padding: 18px 22px; display: grid; gap: 10px; }
+.short h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.short ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+
+/* Figure plates */
+figure { margin: 0; background: var(--surface); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+figcaption { font-size: 0.9rem; color: var(--muted); max-width: 76ch; }
+figcaption b { color: var(--ink); font-family: var(--font-display); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controls .label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-right: 4px; }
+.btn { font: 600 0.85rem var(--font-display); border: 1.5px solid var(--ink); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.btn:hover { background: var(--view-soft); }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.btn:focus-visible { outline: 2px solid var(--view); outline-offset: 2px; }
+.story { font-size: 0.95rem; }
+.panes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); align-items: start; }
+.panes.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.panes.cards { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); align-items: stretch; }
+.panes.cards .pane { display: flex; flex-direction: column; }
+.panes.cards .verdict { margin-top: auto; }
+@media (max-width: 560px) { .panes.three { grid-template-columns: minmax(0, 1fr); } }
+.pane { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; min-width: 0; display: grid; align-content: start; }
+.pane-h { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.pane-h .nm { font-weight: 600; color: var(--ink); }
+.pane.pa .pane-h .nm { color: var(--view); }
+.pane.pb .pane-h .nm { color: var(--hidden); }
+.note { font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; padding: 6px 0; overflow-x: auto; }
+.ln { display: grid; grid-template-columns: 2.2em 1fr; min-height: 1.6em; }
+.ln .n { color: var(--muted); opacity: 0.55; text-align: right; padding-right: 10px; user-select: none; font-size: 0.75rem; line-height: 2.1; }
+.ln code { font-size: inherit; white-space: pre; padding-right: 10px; }
+.ln.na { background: var(--view-soft); }
+.ln.nb { background: var(--hidden-soft); }
+.ln.sa { background: var(--view-soft); }
+.ln.sb { background: var(--hidden-soft); }
+.ln.mk { background: var(--bad-soft); color: var(--bad); }
+.ln.dup code { text-decoration: underline wavy var(--bad); text-underline-offset: 3px; }
+.empty { color: var(--muted); font-family: var(--font-mono); font-size: 0.78rem; padding: 6px 12px; }
+.draw { margin: 0; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; white-space: pre; padding: 8px 12px; overflow-x: auto; }
+.verdict { font: 600 0.78rem var(--font-mono); padding: 7px 10px; border-top: 1px solid var(--rule); line-height: 1.45; }
+.verdict.ok { color: var(--ok); background: var(--ok-soft); }
+.verdict.bad { color: var(--bad); background: var(--bad-soft); }
+.verdict.na { color: var(--muted); }
+.says { font-size: 0.86rem; line-height: 1.5; padding: 8px 12px; color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+.chip { font: 600 0.7rem var(--font-mono); padding: 1px 8px; border-radius: 999px; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.na { background: var(--rule); color: var(--muted); }
+.fam { font: 500 0.66rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding: 8px 12px 0; }
+.rowhead { font: 600 0.8rem var(--font-display); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.result-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); align-items: start; }
+
+/* Bars */
+.bars { display: grid; gap: 10px; max-width: 640px; }
+.bar { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; align-items: center; font-family: var(--font-mono); font-size: 0.8rem; }
+.bar .track { background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; height: 24px; position: relative; }
+.bar .fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 3.4em; }
+.bar .fill.g { background: var(--hidden-soft); color: var(--hidden); }
+.bar .fill.t { background: var(--view-soft); color: var(--view); }
+.bargroup { display: grid; gap: 6px; }
+.bargroup h4 { margin: 0; font: 600 0.8rem var(--font-display); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 760px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); }
+th { font: 600 0.75rem var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+td.term { font-weight: 600; font-family: var(--font-display); }
+.twocol { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.card { background: var(--surface); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; font-size: 0.93rem; align-content: start; }
+.card h3 { font-size: 0.95rem; }
+.colophon { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; display: grid; gap: 8px; max-width: 80ch; }
+@media (max-width: 560px) { body { font-size: 1rem; } h2 { font-size: 1.45rem; } figure { padding: 12px; } }
+
+/* Additions for this page. Each bullet keeps one colour (--d0 to --d4) so a reader can follow it across presses. */
+.lab { font: 0.75rem var(--font-mono); color: var(--muted); }
+.holes { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.hbtn { font: 600 0.78rem var(--font-mono); border: 1.5px solid var(--ink); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 5px 10px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.hbtn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.hbtn .st { font-size: 0.7rem; color: var(--ok); }
+.hbtn[aria-pressed="true"] .st { color: inherit; }
+.hbtn:focus-visible, .kbtn:focus-visible, .tbtn:focus-visible, .board:focus-visible { outline: 2px solid var(--view); outline-offset: 2px; }
+.gtitle { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.gtitle h3 { font-size: 1.15rem; }
+.gtitle .setname { font: 0.74rem var(--font-mono); color: var(--muted); }
+.gbrief { max-width: 62ch; }
+.ggrid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 700px) { .ggrid { grid-template-columns: minmax(0, 1fr); } }
+.gpanel { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; min-width: 0; }
+.gph { font: 0.72rem var(--font-mono); color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 8px; }
+.gph b { color: var(--ink); }
+.board { padding: 8px 6px; display: grid; gap: 4px; }
+.row { display: flex; align-items: center; gap: 8px; border: 1.5px solid transparent; border-radius: 8px; padding: 4px 8px; min-height: 34px; cursor: pointer; user-select: none; }
+.static .row { cursor: default; }
+.row .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
+.row .chip { font: 700 0.85rem var(--font-mono); color: #fff; min-width: 1.7em; height: 1.7em; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; flex: none; }
+.row .chip.c0 { background: var(--d0); } .row .chip.c1 { background: var(--d1); } .row .chip.c2 { background: var(--d2); } .row .chip.c3 { background: var(--d3); } .row .chip.c4 { background: var(--d4); }
+.row .chip.c1, .row .chip.c2, .row .chip.c3 { color: #14181f; }
+:root[data-theme="dark"] .row .chip { color: #10131a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .row .chip { color: #10131a; } }
+.row .ok { margin-left: auto; font: 700 0.8rem var(--font-mono); color: var(--ok); }
+.row.sel { border-color: var(--ink); background: var(--surface); }
+.row.hint { border-color: var(--view); background: var(--view-soft); }
+.row.flash { animation: flash 0.5s; }
+@keyframes flash { 0% { background: var(--bad-soft); } 100% { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .row.flash { animation: none; background: var(--bad-soft); } }
+.score { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 0.8rem var(--font-mono); align-items: baseline; }
+.score b { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.kbtn { font: 600 0.82rem var(--font-mono); border: 1.5px solid var(--ink); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 8px 12px; cursor: pointer; min-height: 40px; display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+.kbtn small { font: 400 0.64rem var(--font-mono); color: var(--muted); }
+.kbtn:hover { background: var(--view-soft); }
+.keys, .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tbtn { font: 600 0.78rem var(--font-display); border: 1.5px solid var(--rule); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tbtn:hover:not(:disabled) { border-color: var(--ink); }
+.tbtn:disabled { opacity: 0.4; cursor: default; }
+.gmsg { font: 0.82rem/1.5 var(--font-mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; min-height: 2.9em; }
+.gmsg.good { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
+.gmsg.bad { color: var(--bad); background: var(--bad-soft); border-color: transparent; }
+.runchips { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.runchips span { font: 600 0.74rem var(--font-mono); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 2px 7px; }
+.after { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; display: grid; gap: 10px; }
+.after h4 { font-size: 0.95rem; }
+table.par { border-collapse: collapse; font-size: 0.9rem; width: 100%; max-width: 560px; }
+table.par th { text-align: left; font: 0.7rem var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px 6px 0; border-bottom: 1px solid var(--rule); }
+table.par td { padding: 6px 12px 6px 0; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+table.par td.n { font: 700 0.95rem var(--font-mono); }
+table.par tr.cur td { background: var(--view-soft); }
+table.par td.none { color: var(--bad); font: 600 0.78rem var(--font-mono); }
+.help { font: 0.74rem/1.5 var(--font-mono); color: var(--muted); }
+.help kbd { font: 600 0.72rem var(--font-mono); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--bg); color: var(--ink); }
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Learning series · a game on a computed map · built 2026-10-11 from the research library</div>
+    <h1>Outline Golf</h1>
+    <p class="lede col">Each hole gives you an outline, a target outline and a set of keys. Get from one to the other in as few presses as you can. Par is the fewest presses any run of those keys can take, found by searching every arrangement of the bullets. Afterwards each hole shows what the same job costs under other sets of keys, which is the question decision 18 puts to the plugin.</p>
+    <p class="legend col">Every par comes from the same model as <a href="keys-to-anywhere.html">Keys to Anywhere</a>: outlines of up to five labelled bullets, and keys that each move one bullet with what is under it. It is not the plugin’s code, but for today’s four keys the plugin’s own code gives the same outline as the model on every key press at three, four and five bullets <span class="tag measured">measured</span> (see Where It Lands). Outlines are drawn as bullets, two steps of indentation per level.</p>
+  </header>
+
+  <div class="key" aria-label="How we know">
+    <div><span class="tag measured">measured</span><span>Counted by a script on the model: every par and every number in the tables.</span></div>
+    <div><span class="tag reported">reported</span><span>A note in the library or a paper says it.</span></div>
+    <div><span class="tag inferred">inferred</span><span>Our reading of what the counts mean for the plugin.</span></div>
+  </div>
+
+  <section class="chapter" id="play">
+    <div class="num">the course · seven holes</div>
+    <h2>Play it</h2>
+    <div class="col stack">
+      <p>Pick a bullet, then press a key. The bullet keeps its colour, so you can follow it. A check mark means a bullet already sits where the target has it. A press that does nothing is not counted, and the message says why: that refusal is part of what the holes are about.</p>
+    </div>
+    <figure id="game">
+      <div class="holes" id="g-holes" role="group" aria-label="Holes"></div>
+      <div class="holes" id="g-sets" role="group" aria-label="Key sets"></div>
+      <div class="gtitle"><h3 id="g-title"></h3></div>
+      <p class="gbrief" id="g-brief"></p>
+      <div class="ggrid">
+        <div class="gpanel"><div class="gph"><b>your outline</b><span id="g-sel"></span></div><div class="board" id="g-board" tabindex="0" role="listbox" aria-label="Your outline. Arrow keys choose a bullet; Tab, Shift-Tab and Alt-arrows press keys."></div></div>
+        <div class="gpanel"><div class="gph"><b>target</b><span id="g-in"></span></div><div class="board static" id="g-target" aria-label="Target outline"></div></div>
+      </div>
+      <div class="score" id="g-score"></div>
+      <div class="keys" id="g-keys" role="group" aria-label="Keys"></div>
+      <div class="tools">
+        <button class="tbtn" id="t-undo">undo a press</button>
+        <button class="tbtn" id="t-reset">start again</button>
+        <button class="tbtn" id="t-hint">hint</button>
+        <button class="tbtn" id="t-run">show a shortest run</button>
+        <button class="tbtn" id="t-new">a random hole</button>
+      </div>
+      <div class="gmsg" id="g-msg" aria-live="polite"></div>
+      <div class="runchips" id="g-run"></div>
+      <div class="after" id="g-after" hidden></div>
+      <p class="help">With the outline focused: <kbd>↑</kbd> <kbd>↓</kbd> choose a bullet, <kbd>Tab</kbd> indent, <kbd>⇧Tab</kbd> outdent, <kbd>⌥↑</kbd> <kbd>⌥↓</kbd> move, <kbd>⌥⇧↑</kbd> <kbd>⌥⇧↓</kbd> to top or bottom, <kbd>Esc</kbd> leaves the outline. The buttons do the same.</p>
+      <figcaption><b>Figure 1.</b> A puzzle over the state space of Keys to Anywhere. Par is the shortest path found by breadth-first search over every outline of the same bullets. <span class="tag measured">measured</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="chapter" id="learn">
+    <div class="num">what the holes show</div>
+    <h2>The same job under different keys</h2>
+    <div class="col stack">
+      <ul class="plain">
+        <li><b>A first child cannot move up today.</b> Hole 4 asks for a swap that takes <b data-par="4:four">–</b> presses with today’s keys and <b data-par="4:leave">–</b> with a move up that leaves its list, the change issue #223 asks for. <span class="tag measured">measured</span></li>
+        <li><b>The two outdents differ in presses.</b> Taking b out of a list with two more bullets after it takes <b data-par="3:four">–</b> press when outdent takes the later bullets with it (foundation law O11) and <b data-par="3:alone">–</b> when it moves b alone. <span class="tag measured">measured</span> Which one the plugin has is the foundation’s statement for outdent; this hole only counts presses. <span class="tag reported">reported</span></li>
+        <li><b>“To top” and “to bottom” pay off on one kind of job.</b> Reversing a list of five takes <b data-par="6:four">–</b> presses with today’s keys, <b data-par="6:leave">–</b> when the keys leave the list and <b data-par="6:ends">–</b> with “to top” and “to bottom”. Across all one-bullet moves of five bullets they help less than leaving the list does (see Keys to Anywhere). <span class="tag measured">measured</span></li>
+        <li><b>A set of keys without a way out is a trap.</b> With Tab, up and down alone, hole 5 has no solution at all, and Keys to Anywhere shows that every set that reaches every outline from every other contains indent and a key that can take a bullet out of its parent. <span class="tag measured">measured</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter" id="for-us">
+    <div class="num">for True Outliner</div>
+    <h2>What this suggests, and what it does not</h2>
+    <div class="col stack">
+      <ul class="plain">
+        <li><b>Par is a cost in presses, not in surprise.</b> Decision 18 weighs a key that changes at a list’s end against an addressed command; a puzzle can show the saving in presses, and cannot show what the changed key costs a user who expected it to do nothing. <span class="tag inferred">inferred</span></li>
+        <li><b>The game doubles as a check of the rule.</b> A hole whose par with the plugin’s keys differs from par in this model is a place where the model’s key does not match the plugin’s, which is what the foundation’s planned reachability check (N11) would find on the real operations. <span class="tag inferred">inferred</span></li>
+        <li><b>Holes could come from real edits.</b> The library cites observed edits that change containment (Ko, Aung and Myers, 2005); a course made of such edits would count presses on the jobs people do, not on random pairs. <span class="tag inferred">inferred</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p><b>Method.</b> <code>reach/reach.js</code> builds every labelled outline of n bullets and a table of edges for each key; the page searches breadth-first from the start outline over the keys of the chosen set, and a hole’s par is the distance to the target, or “no run” when the target is not reached. The model’s keys are listed in Keys to Anywhere. A random hole picks a start and a target at a distance in the chosen band under the chosen keys.</p>
+    <p><b>Limits.</b> Outlines are forests of bullets only: no text, folds, headings or selections. A key acts on one chosen bullet; par does not count choosing a bullet, which a user also does. Outdent takes the later bullets with it unless the set says otherwise.</p>
+    <p><b>Sources.</b> Library notes: <i>reachability-and-one-step-forms</i> and <i>counting-the-grammar</i> in the area on interaction and keyboard grammar; laws O10 and O11; decisions D18 and D21. Related pages in this series: <a href="keys-to-anywhere.html">Keys to Anywhere</a> and Which Edits Collide.</p>
+  </footer>
+</div>
+
+<script>
+// Crossing-edits model: an outline is an ordered forest; an edit is one keyboard gesture on one bullet.
+// Three ways to name the edit when it is replayed on a state the other edit has already changed:
+//   "line"  the gesture on whichever bullet sits on the same line number as when it was made
+//   "id"    the gesture on the same bullet, evaluated again against the current outline
+//   "fixed" the gesture turned into a plain instruction (which bullet goes where) when it was made
+const X = (() => {
+  const ROOT = "#";
+  const clone = t => { const o = {}; for (const k in t) o[k] = { text: t[k].text, parent: t[k].parent, kids: t[k].kids.slice() }; return o; };
+  const fromForest = (forest) => { // forest: [[id, text, [children...]]...] nested
+    const t = { [ROOT]: { text: "", parent: null, kids: [] } };
+    const add = (n, p) => { const [id, text, kids] = n; t[id] = { text, parent: p, kids: [] }; t[p].kids.push(id); (kids || []).forEach(k => add(k, id)); };
+    forest.forEach(n => add(n, ROOT));
+    return t;
+  };
+  const order = (t, id = ROOT, out = []) => { for (const k of t[id].kids) { out.push(k); order(t, k, out); } return out; };
+  const isAnc = (t, a, d) => { for (let n = t[d] && t[d].parent; n != null; n = t[n].parent) if (n === a) return true; return false; };
+  const depth = (t, id) => { let d = 0; for (let n = t[id].parent; n !== ROOT; n = t[n].parent) d++; return d; };
+  const detach = (t, id) => { const p = t[t[id].parent]; p.kids.splice(p.kids.indexOf(id), 1); };
+  const sibs = (t, id) => t[t[id].parent].kids;
+  const prevSib = (t, id) => { const s = sibs(t, id), i = s.indexOf(id); return i > 0 ? s[i - 1] : null; };
+  const nextSib = (t, id) => { const s = sibs(t, id), i = s.indexOf(id); return i < s.length - 1 ? s[i + 1] : null; };
+  const sig = t => { const f = id => t[id].kids.map(k => k + ":" + t[k].text + (t[k].kids.length ? "(" + f(k) + ")" : "")).join(","); return f(ROOT); };
+  const lines = t => order(t).map(id => ({ id, depth: depth(t, id), text: t[id].text }));
+
+  // plain instructions; each returns null if it cannot be carried out
+  const prim = {
+    setText: (t, a) => { if (!t[a.t]) return null; t[a.t].text = a.x; return t; },
+    insertAfter: (t, a) => { if (!t[a.t] || t[a.n]) return null; const p = t[a.t].parent; t[a.n] = { text: a.x, parent: p, kids: [] }; const k = t[p].kids; k.splice(k.indexOf(a.t) + 1, 0, a.n); return t; },
+    remove: (t, a) => { if (!t[a.t]) return null; const drop = id => { t[id].kids.slice().forEach(drop); delete t[id]; }; detach(t, a.t); drop(a.t); return t; },
+    moveInto: (t, a) => { if (!t[a.t] || !t[a.p] || a.t === a.p || isAnc(t, a.t, a.p)) return null; detach(t, a.t); t[a.p].kids.push(a.t); t[a.t].parent = a.p; return t; },
+    moveAfter: (t, a) => { if (!t[a.t] || !t[a.a] || a.t === a.a || isAnc(t, a.t, a.a)) return null; detach(t, a.t); const p = t[a.a].parent; const k = t[p].kids; k.splice(k.indexOf(a.a) + 1, 0, a.t); t[a.t].parent = p; return t; },
+    moveBefore: (t, a) => { if (!t[a.t] || !t[a.a] || a.t === a.a || isAnc(t, a.t, a.a)) return null; detach(t, a.t); const p = t[a.a].parent; const k = t[p].kids; k.splice(k.indexOf(a.a), 0, a.t); t[a.t].parent = p; return t; },
+    adopt: (t, a) => { // bullets named in a.ids that still exist move under a.t, last
+      if (!t[a.t]) return null;
+      for (const id of a.ids) if (t[id] && id !== a.t && !isAnc(t, id, a.t)) { detach(t, id); t[a.t].kids.push(id); t[id].parent = a.t; }
+      return t; },
+    merge: (t, a) => { if (!t[a.t] || !t[a.s] || a.t === a.s || isAnc(t, a.t, a.s) || isAnc(t, a.s, a.t)) return null; t[a.s].text += t[a.t].text; for (const k of t[a.t].kids.slice()) { t[a.s].kids.push(k); t[k].parent = a.s; } t[a.t].kids = []; detach(t, a.t); delete t[a.t]; return t; },
+  };
+  const KINDS = ["edit", "add", "delete", "indent", "outdent", "up", "down", "join"];
+  // gesture(kind, tree, target, who) -> list of instructions, or null when the gesture is not available there
+  const gesture = (kind, t, id, who) => {
+    if (!t[id]) return null;
+    const new_ = who === "A" ? "x" : "y", txt = who;
+    switch (kind) {
+      case "edit": return [["setText", { t: id, x: txt + "!" }]];
+      case "add": return [["insertAfter", { t: id, n: new_, x: txt + "+" }]];
+      case "delete": return [["remove", { t: id }]];
+      case "indent": { const p = prevSib(t, id); return p ? [["moveInto", { t: id, p }]] : null; }
+      case "outdent": { const g = t[id].parent; if (g === ROOT) return null; const f = sibs(t, id); const after = f.slice(f.indexOf(id) + 1); return [["moveAfter", { t: id, a: g }], ["adopt", { t: id, ids: after }]]; }
+      case "up": { const s = prevSib(t, id); return s ? [["moveBefore", { t: id, a: s }]] : null; }
+      case "down": { const s = nextSib(t, id); return s ? [["moveAfter", { t: id, a: s }]] : null; }
+      case "join": { const s = prevSib(t, id); return s ? [["merge", { t: id, s }]] : null; }
+    }
+  };
+  // an edit as authored: what it names, and what is replayed
+  const author = (mode, base, kind, id, who) => {
+    const steps = gesture(kind, base, id, who);
+    if (!steps) return null;
+    const line = order(base).indexOf(id);
+    return { mode, kind, who, id, line, steps };
+  };
+  // replay on state t; returns {tree, id} (id: the bullet the edit landed on), or null if the edit has no effect there
+  const replay = (e, t) => {
+    let steps, id = e.id;
+    if (e.mode === "fixed") steps = e.steps;
+    else {
+      if (e.mode === "line") id = order(t)[e.line];
+      if (id == null) return null;
+      steps = gesture(e.kind, t, id, e.who);
+      if (!steps) return null;
+    }
+    const w = clone(t);
+    for (const [name, a] of steps) if (!prim[name](w, a)) return null;
+    return { tree: w, id };
+  };
+  // both orders of two edits made on the same base outline
+  const cross = (mode, base, ka, ta, kb, tb) => {
+    const A = author(mode, base, ka, ta, "A"), B = author(mode, base, kb, tb, "B");
+    if (!A || !B) return null;
+    const ra = replay(A, base), rb = replay(B, base);
+    if (!ra || !rb) return null; // an edit that does nothing on its own is not a situation
+    const a1 = ra.tree, b1 = rb.tree;
+    const rab = replay(B, a1), rba = replay(A, b1);
+    const ab = rab ? rab.tree : a1, ba = rba ? rba.tree : b1;
+    const same = sig(ab) === sig(ba);
+    const dropped = !rab || !rba;
+    const stray = (rab && rab.id !== B.id) || (rba && rba.id !== A.id);
+    const cls = !same ? "diverge" : stray ? "misdirected" : dropped ? "lost" : "independent";
+    return { cls, A, B, aThenB: ab, bThenA: ba, aOnly: a1, bOnly: b1, droppedAB: !rab, droppedBA: !rba, strayAB: !!(rab && rab.id !== B.id), strayBA: !!(rba && rba.id !== A.id) };
+  };
+  const relation = (t, a, b) => {
+    if (a === b) return "same";
+    if (t[a].parent === t[b].parent) { const s = sibs(t, a); return Math.abs(s.indexOf(a) - s.indexOf(b)) === 1 ? "next" : "sibling"; }
+    if (t[a].parent === b || t[b].parent === a) return "child";
+    if (isAnc(t, a, b) || isAnc(t, b, a)) return "ancestor";
+    return "other";
+  };
+  const REL = ["same", "next", "sibling", "child", "ancestor", "other"];
+  // every ordered forest of n nodes, ids a,b,c.. in reading order
+  const forests = (n) => {
+    const shapes = (m) => { // list of forests as arrays of subtree sizes trees
+      if (m === 0) return [[]];
+      const out = [];
+      for (let k = 1; k <= m; k++) for (const kids of shapes(k - 1)) for (const rest of shapes(m - k)) out.push([kids].concat(rest));
+      return out;
+    };
+    return shapes(n).map(sh => { let c = 0; const mk = f => f.map(kids => { const id = String.fromCharCode(97 + c++); return [id, id, mk(kids)]; }); return fromForest(mk(sh)); });
+  };
+  const tally = (modes, maxNodes) => {
+    const out = {}, F = []; for (let n = 1; n <= maxNodes; n++) F[n] = forests(n);
+    for (const mode of modes) {
+      const cells = {}; let total = 0;
+      for (const ka of KINDS) for (const kb of KINDS) { cells[ka + "|" + kb] = {}; for (const r of REL) cells[ka + "|" + kb][r] = { independent: 0, lost: 0, misdirected: 0, diverge: 0, ex: {} }; }
+      for (let n = 1; n <= maxNodes; n++) F[n].forEach((base, i) => {
+        const ids = order(base);
+        for (const ka of KINDS) for (const kb of KINDS) for (const ta of ids) for (const tb of ids) {
+          const r = cross(mode, base, ka, ta, kb, tb); if (!r) continue;
+          const rel = relation(base, ta, tb); const c = cells[ka + "|" + kb][rel];
+          c[r.cls]++; total++;
+          if (!c.ex[r.cls]) c.ex[r.cls] = [n, i, ta, tb];
+        }
+      });
+      out[mode] = { total, cells };
+    }
+    return out;
+  };
+  return { ROOT, KINDS, REL, clone, fromForest, order, lines, sig, depth, forests, cross, relation, tally, gesture, author, replay, prim, isAnc, prevSib, nextSib, sibs, detach };
+})();
+
+// Keys to anywhere: outlines of n labelled bullets as states, key presses as edges.
+// A "move" is one bullet with everything under it taken out and put back anywhere else.
+const R = (() => {
+  const E = typeof module !== "undefined" ? require("../commute/engine.js") : X;
+  const { ROOT, clone, order, sig, prim, prevSib, nextSib, sibs, isAnc } = E;
+  const perms = (a) => a.length <= 1 ? [a] : a.flatMap((x, i) => perms(a.slice(0, i).concat(a.slice(i + 1))).map(p => [x].concat(p)));
+  const relabel = (t, map) => { const o = { [ROOT]: { text: "", parent: null, kids: [] } }; for (const id in t) { if (id === ROOT) continue; const m = map[id]; o[m] = { text: m, parent: t[id].parent === ROOT ? ROOT : map[t[id].parent], kids: t[id].kids.map(k => map[k]) }; } o[ROOT].kids = t[ROOT].kids.map(k => map[k]); return o; };
+  const states = (n) => {
+    const ids = Array.from({ length: n }, (_, i) => String.fromCharCode(97 + i));
+    const out = [], seen = new Set();
+    for (const shape of E.forests(n)) for (const p of perms(ids)) { const map = {}; ids.forEach((id, i) => map[id] = p[i]); const t = relabel(shape, map); const s = sig(t); if (!seen.has(s)) { seen.add(s); out.push(t); } }
+    return out;
+  };
+  // each key returns instructions for bullet id in tree t, or null when the key does nothing there
+  const KEYS = {
+    indent: (t, id) => { const p = prevSib(t, id); return p ? [["moveInto", { t: id, p }]] : null; },
+    outdent: (t, id) => { const g = t[id].parent; if (g === ROOT) return null; const f = sibs(t, id); return [["moveAfter", { t: id, a: g }], ["adopt", { t: id, ids: f.slice(f.indexOf(id) + 1) }]]; },
+    outdentAlone: (t, id) => { const g = t[id].parent; return g === ROOT ? null : [["moveAfter", { t: id, a: g }]]; },
+    up: (t, id) => { const s = prevSib(t, id); return s ? [["moveBefore", { t: id, a: s }]] : null; },
+    down: (t, id) => { const s = nextSib(t, id); return s ? [["moveAfter", { t: id, a: s }]] : null; },
+    upLeave: (t, id) => { const s = prevSib(t, id); if (s) return [["moveBefore", { t: id, a: s }]]; const g = t[id].parent; return g === ROOT ? null : [["moveBefore", { t: id, a: g }]]; },
+    downLeave: (t, id) => { const s = nextSib(t, id); if (s) return [["moveAfter", { t: id, a: s }]]; const g = t[id].parent; return g === ROOT ? null : [["moveAfter", { t: id, a: g }]]; },
+    top: (t, id) => { const f = sibs(t, id); return f[0] === id ? null : [["moveBefore", { t: id, a: f[0] }]]; },
+    bottom: (t, id) => { const f = sibs(t, id); return f[f.length - 1] === id ? null : [["moveAfter", { t: id, a: f[f.length - 1] }]]; },
+  };
+  const press = (t, key, id) => { const steps = KEYS[key](t, id); if (!steps) return null; const w = clone(t); for (const [nm, a] of steps) if (!prim[nm](w, a)) return null; return sig(w) === sig(t) ? null : w; };
+  const SETS = {
+    four: { name: "four keys", keys: ["indent", "outdent", "up", "down"] },
+    alone: { name: "four keys, outdent leaves its later siblings", keys: ["indent", "outdentAlone", "up", "down"] },
+    leave: { name: "four keys, up and down also leave the parent", keys: ["indent", "outdent", "upLeave", "downLeave"] },
+    ends: { name: "four keys and move to top or bottom", keys: ["indent", "outdent", "up", "down", "top", "bottom"] },
+  };
+  // every outline reached by taking one bullet and what is under it out and putting it back somewhere else
+  const moves = (t) => {
+    const out = new Map();
+    for (const id of order(t)) {
+      const w0 = clone(t); const par = w0[id].parent; const idx0 = w0[par].kids.indexOf(id); w0[par].kids.splice(idx0, 1);
+      const targets = [ROOT].concat(order(w0).filter(x => x !== id && !isAnc(t, id, x)));
+      for (const p of targets) for (let i = 0; i <= w0[p].kids.length; i++) {
+        if (p === par && i === idx0) continue;
+        const w = clone(w0); w[p].kids.splice(i, 0, id); w[id].parent = p;
+        const s = sig(w); if (!out.has(s)) out.set(s, { tree: w, id, p, i });
+      }
+    }
+    return out;
+  };
+  // the whole graph for one key set
+  const graph = (n, keys, list) => {
+    const S = list || states(n), idx = new Map(S.map((t, i) => [sig(t), i]));
+    const adj = S.map(t => { const e = new Map(); for (const k of keys) for (const id of order(t)) { const w = press(t, k, id); if (w) { const j = idx.get(sig(w)); if (!e.has(j)) e.set(j, { key: k, id }); } } return e; });
+    return { S, idx, adj };
+  };
+  // edges of one key only, as arrays of [from][to, id]
+  const keyEdges = (S, idx, key) => S.map(t => { const e = []; for (const id of order(t)) { const w = press(t, key, id); if (w) e.push([idx.get(sig(w)), id]); } return e; });
+  // BFS over several keys' edge tables; via[v] = [key, bullet] of the press that first reached v
+  const bfsKeys = (S, tables, keys, s) => { const n = S.length, d = new Int16Array(n).fill(-1), prev = new Int32Array(n).fill(-1), via = new Array(n); d[s] = 0; const q = [s]; for (let h = 0; h < q.length; h++) { const u = q[h]; for (const k of keys) for (const [v, id] of tables[k][u]) if (d[v] < 0) { d[v] = d[u] + 1; prev[v] = u; via[v] = [k, id]; q.push(v); } } return { d, prev, via, order: q }; };
+  const bfs = (g, s) => { const d = new Int16Array(g.S.length).fill(-1), prev = new Int32Array(g.S.length).fill(-1); d[s] = 0; const q = [s]; for (let h = 0; h < q.length; h++) { const u = q[h]; for (const v of g.adj[u].keys()) if (d[v] < 0) { d[v] = d[u] + 1; prev[v] = u; q.push(v); } } return { d, prev }; };
+  return { X: E, states, KEYS, SETS, press, moves, graph, bfs, keyEdges, bfsKeys };
+})();
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const KEYCAP = { indent: "Tab", outdent: "⇧Tab", outdentAlone: "⇧Tab alone", up: "up", down: "down", upLeave: "up", downLeave: "down", top: "to top", bottom: "to bottom" };
+const KEYSUB = { indent: "indent", outdent: "outdent", outdentAlone: "outdent, bullet alone", up: "move up", down: "move down", upLeave: "move up, may leave", downLeave: "move down, may leave", top: "first in list", bottom: "last in list" };
+const SHORTCUT = { indent: "Tab", outdent: "Shift+Tab", outdentAlone: "Shift+Tab", up: "Alt+ArrowUp", down: "Alt+ArrowDown", upLeave: "Alt+ArrowUp", downLeave: "Alt+ArrowDown", top: "Alt+Shift+ArrowUp", bottom: "Alt+Shift+ArrowDown" };
+const PRESETS = {
+  four: { name: "today’s four keys", keys: ["indent", "outdent", "up", "down"] },
+  alone: { name: "outdent moves only its bullet", keys: ["indent", "outdentAlone", "up", "down"] },
+  leave: { name: "up and down may leave the list", keys: ["indent", "outdent", "upLeave", "downLeave"] },
+  ends: { name: "four keys and to top, to bottom", keys: ["indent", "outdent", "up", "down", "top", "bottom"] },
+  noOut: { name: "Tab, up and down only", keys: ["indent", "up", "down"] },
+};
+const HOLES = [
+  { name: "Swap", start: "a\nb\nc\nd", target: "a\nc\nb\nd", set: "four", brief: "Make b and c trade places.", teach: "Neighbours in one list trade places in one press, under every set of keys here." },
+  { name: "Tuck in", start: "a\nb\nc\nd", target: "a\n  b\nc\nd", set: "four", brief: "Make b a child of a.", teach: "Tab makes a bullet the last child of the bullet above it." },
+  { name: "Take the followers", start: "a\n  b\n  c\n  d", target: "a\nb\n  c\n  d", set: "four", brief: "Take b out of a, so that c and d end up under b.", teach: "Outdent as the foundation states it (law O11) takes the bullets after b with it. If it moved b alone, c and d would stay under a and would have to be pulled out one at a time." },
+  { name: "First child, one step up", start: "a\nb\n  c\n  d", target: "a\nc\nb\n  d", set: "four", brief: "Put c above b.", teach: "Move up does nothing on the first bullet of a list, so c needs a detour. Today’s keys take {four} presses; a move up that leaves the list takes {leave}. That is the change in issue #223, and decision 18 asks whether it belongs to the key or to a command with a destination." },
+  { name: "No way out", start: "a\n  b\n  c\n  d", target: "a\n  b\n  c\nd", set: "noOut", brief: "Take d out of a, using only Tab, up and down.", teach: "Tab, up and down never take a bullet out of its parent, so with only these keys no run of presses reaches the target. With today’s four keys it takes {four} press: use the key sets above the hole to try." },
+  { name: "Reverse the list", start: "a\nb\nc\nd\ne", target: "e\nd\nc\nb\na", set: "four", brief: "Reverse the order of five bullets. Then switch to the keys with “to top” and “to bottom” and play it again.", teach: "The job where “to top” and “to bottom” earn their keep: compare the rows." },
+  { name: "Reverse the chain", start: "a\n  b\n    c\n      d", target: "d\n  c\n    b\n      a", set: "four", brief: "Turn the chain around.", teach: "One of the farthest pairs of outlines of four bullets under today’s keys. Nobody edits like this; it is what the “longest” figure in Keys to Anywhere measures." },
+];
+
+// ---- the model ----
+const CACHE = {};
+function space(n) {
+  if (!CACHE[n]) { const S = R.states(n); CACHE[n] = { S, idx: new Map(S.map((t, i) => [X.sig(t), i])), tables: {} }; }
+  return CACHE[n];
+}
+function table(n, key) { const sp = space(n); if (!sp.tables[key]) sp.tables[key] = R.keyEdges(sp.S, sp.idx, key); return sp.tables[key]; }
+function parse(text) {
+  const rows = text.split("\n").map(l => ({ depth: (l.length - l.trimStart().length) / 2, id: l.trim() }));
+  const build = (i, depth) => { const out = []; while (i < rows.length && rows[i].depth === depth) { const r = rows[i]; const [kids, j] = build(i + 1, depth + 1); out.push([r.id, r.id, kids]); i = j; } return [out, i]; };
+  return X.fromForest(build(0, 0)[0]);
+}
+const stateOf = text => { const t = parse(text); const n = X.order(t).length; return { n, i: space(n).idx.get(X.sig(t)) }; };
+const solveFrom = (n, keys, from) => { const sp = space(n); keys.forEach(k => table(n, k)); return R.bfsKeys(sp.S, sp.tables, keys, from); };
+function pathTo(r, from, to) { const out = []; for (let v = to; v !== from; v = r.prev[v]) out.push(r.via[v]); return out.reverse(); }
+const parOf = (n, keys, from, to) => { const r = solveFrom(n, keys, from); return r.d[to] < 0 ? null : r.d[to]; };
+
+// ---- the game ----
+const G = { hole: 0, n: 4, set: "four", keys: [], start: 0, target: 0, cur: 0, sel: "a", hist: [], par: null, solved: false, hint: null, runTimer: null, label: "", brief: "", teach: "", extra: false };
+const store = { get() { try { return JSON.parse(localStorage.getItem("outline-golf") || "{}"); } catch (e) { return {}; } }, set(v) { try { localStorage.setItem("outline-golf", JSON.stringify(v)); } catch (e) {} } };
+const cls = id => "c" + (id.charCodeAt(0) - 97);
+const tree = () => space(G.n).S[G.cur];
+const targetTree = () => space(G.n).S[G.target];
+
+function load(h, custom) {
+  clearInterval(G.runTimer);
+  G.hole = h;
+  const def = custom || HOLES[h];
+  const s = custom ? custom.s : stateOf(def.start), t = custom ? custom.t : stateOf(def.target);
+  G.n = s.n; G.set = def.set; G.keys = PRESETS[def.set].keys; G.start = s.i; G.target = t.i; G.cur = s.i;
+  G.hist = []; G.solved = false; G.hint = null; G.label = def.name; G.brief = def.brief; G.teach = def.teach; G.extra = !!custom;
+  const ids = X.order(space(G.n).S[G.start]); G.sel = ids.length ? ids[0] : "a";
+  G.par = parOf(G.n, G.keys, G.start, G.target);
+  $("#g-run").innerHTML = ""; $("#g-after").hidden = true;
+  say(G.par == null ? "No run of these keys reaches the target. Try anyway, then look at the hint." : "Choose a bullet, then press a key.");
+  render();
+}
+
+function switchSet(k) {
+  clearInterval(G.runTimer); G.set = k; G.keys = PRESETS[k].keys; G.cur = G.start; G.hist = []; G.solved = false; G.hint = null;
+  G.par = parOf(G.n, G.keys, G.start, G.target); $("#g-run").innerHTML = ""; $("#g-after").hidden = true;
+  say(G.par == null ? "No run of these keys reaches the target. Try anyway, then look at the hint." : `Same hole, other keys. Par is ${G.par}.`); render();
+}
+function say(text, kind) { const m = $("#g-msg"); m.textContent = text; m.className = "gmsg" + (kind ? " " + kind : ""); }
+function inPlace(t, tg, id) { const par = t[id].parent, p2 = tg[id].parent; return par === p2 && t[par].kids.indexOf(id) === tg[p2].kids.indexOf(id); }
+function boardHTML(t, tg, opts) {
+  return X.lines(t).map(l => {
+    const ok = tg && inPlace(t, tg, l.id);
+    const c = ["row"]; if (opts.sel === l.id) c.push("sel"); if (opts.hint === l.id) c.push("hint");
+    return `<div class="${c.join(" ")}" data-id="${l.id}" style="margin-left:${l.depth * 24}px" ${opts.live ? `role="option" aria-selected="${opts.sel === l.id}"` : ""}><span class="dot"></span><span class="chip ${cls(l.id)}">${esc(l.text)}</span>${ok && opts.marks ? '<span class="ok" title="in place">✓</span>' : ""}</div>`;
+  }).join("");
+}
+function render() {
+  const sp = space(G.n), t = tree(), tg = targetTree();
+  const ids = X.order(t);
+  $("#g-holes").innerHTML = HOLES.map((h, i) => { const s = store.get()[i]; return `<button class="hbtn" data-h="${i}" aria-pressed="${!G.extra && G.hole === i}">${i + 1}${s ? `<span class="st">${s.best <= s.par ? "★" : "✓"}</span>` : ""}</button>`; }).join("");
+  $("#g-holes").querySelectorAll("button").forEach(b => b.onclick = () => load(+b.dataset.h));
+  $("#g-sets").innerHTML = `<span class="lab">keys</span>` + Object.entries(PRESETS).map(([k, p]) => `<button class="hbtn" data-set="${k}" aria-pressed="${G.set === k}">${esc(p.name)}</button>`).join("");
+  $("#g-sets").querySelectorAll("button").forEach(b => b.onclick = () => switchSet(b.dataset.set));
+  $("#g-title").textContent = G.extra ? G.label : `Hole ${G.hole + 1}: ${G.label}`;
+  $("#g-brief").textContent = G.brief;
+  $("#g-board").innerHTML = boardHTML(t, tg, { sel: G.sel, hint: G.hint, marks: true, live: true });
+  $("#g-target").innerHTML = boardHTML(tg, null, {});
+  $("#g-board").querySelectorAll(".row").forEach(r => r.onclick = () => { G.sel = r.dataset.id; G.hint = null; render(); });
+  const inN = ids.filter(id => inPlace(t, tg, id)).length;
+  $("#g-sel").textContent = "chosen: " + G.sel;
+  $("#g-in").textContent = `${inN} of ${ids.length} in place`;
+  const presses = G.hist.length;
+  $("#g-score").innerHTML = `<span>presses <b>${presses}</b></span><span>par <b>${G.par == null ? "–" : G.par}</b></span>` + (G.solved ? `<span><b>${presses === G.par ? "par" : presses > G.par ? "+" + (presses - G.par) : ""}</b></span>` : "");
+  $("#g-keys").innerHTML = G.keys.map(k => `<button class="kbtn" data-k="${k}" title="${KEYSUB[k]}">${KEYCAP[k]}<small>${KEYSUB[k]}</small></button>`).join("");
+  $("#g-keys").querySelectorAll("button").forEach(b => b.onclick = () => press(b.dataset.k));
+  $("#t-undo").disabled = !G.hist.length; $("#t-reset").disabled = !G.hist.length && G.cur === G.start;
+  $("#t-hint").disabled = G.solved; $("#t-run").disabled = false;
+}
+
+function reason(t, key, id) {
+  const sibs = X.sibs(t, id), first = sibs[0] === id, last = sibs[sibs.length - 1] === id, top = t[id].parent === X.ROOT;
+  const nm = KEYCAP[key] + " on " + id;
+  if (key === "indent") return `${nm} does nothing: ${id} is the first bullet in its list, so there is no bullet above it to become its parent.`;
+  if (key === "outdent" || key === "outdentAlone") return `${nm} does nothing: ${id} is already at the top level.`;
+  if (key === "up") return `${nm} does nothing: ${id} is the first bullet in its list. This is the refusal issue #223 reports.`;
+  if (key === "down") return `${nm} does nothing: ${id} is the last bullet in its list. This is the refusal issue #223 reports.`;
+  if (key === "upLeave") return `${nm} does nothing: ${id} is the first bullet at the top level.`;
+  if (key === "downLeave") return `${nm} does nothing: ${id} is the last bullet at the top level.`;
+  if (key === "top") return `${nm} does nothing: ${id} is already first in its list.`;
+  if (key === "bottom") return `${nm} does nothing: ${id} is already last in its list.`;
+  return `${nm} does nothing here.`;
+}
+function press(key) {
+  if (G.solved) return;
+  const sp = space(G.n), t = tree();
+  const w = R.press(t, key, G.sel);
+  if (!w) { say(reason(t, key, G.sel), "bad"); const row = $(`#g-board .row[data-id="${G.sel}"]`); if (row) { row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash"); } return; }
+  G.hist.push({ from: G.cur, key, id: G.sel }); G.cur = sp.idx.get(X.sig(w)); G.hint = null;
+  if (G.cur === G.target) return finish();
+  say(`${KEYCAP[key]} on ${G.sel}.`);
+  render();
+}
+function finish() {
+  G.solved = true; render();
+  const n = G.hist.length;
+  const pr = n === 1 ? "press" : "presses";
+  say(n === G.par ? `Solved in ${n} ${pr}, which is par.` : `Solved in ${n} ${pr}. Par is ${G.par}.`, "good");
+  if (!G.extra) { const s = store.get(); const prev = s[G.hole]; if (!prev || n < prev.best) s[G.hole] = { best: n, par: G.par }; store.set(s); render(); }
+  after();
+}
+function after() {
+  const el = $("#g-after");
+  const rows = Object.entries(PRESETS).map(([k, p]) => { const v = parOf(G.n, p.keys, G.start, G.target); return `<tr class="${k === G.set ? "cur" : ""}"><td>${esc(p.name)}</td>${v == null ? '<td class="none">no run</td>' : `<td class="n">${v}</td>`}</tr>`; }).join("");
+  el.innerHTML = `<h4>What this hole costs under other keys</h4><table class="par"><thead><tr><th>keys</th><th>par</th></tr></thead><tbody>${rows}</tbody></table>${G.teach ? `<p>${esc(G.teach.replace(/\{(\w+)\}/g, (_, k) => { const v = parOf(G.n, PRESETS[k].keys, G.start, G.target); return v == null ? "no run" : v; }))}</p>` : ""}`;
+  el.hidden = false;
+}
+function undo() { if (!G.hist.length) return; const h = G.hist.pop(); G.cur = h.from; G.solved = false; G.hint = null; $("#g-after").hidden = true; say("Undone."); render(); }
+function reset() { clearInterval(G.runTimer); G.cur = G.start; G.hist = []; G.solved = false; G.hint = null; $("#g-run").innerHTML = ""; $("#g-after").hidden = true; say("Choose a bullet, then press a key."); render(); }
+function hint() {
+  const r = solveFrom(G.n, G.keys, G.cur);
+  if (r.d[G.target] < 0) { say(`No run of these keys reaches the target from here (${r.order.length.toLocaleString("en-US")} ${r.order.length === 1 ? "outline" : "outlines"} can be reached). Try another set of keys above.`, "bad"); return; }
+  const step = pathTo(r, G.cur, G.target)[0]; G.sel = step[1]; G.hint = step[1]; say(`Hint: ${KEYCAP[step[0]]} on ${step[1]}. ${r.d[G.target]} ${r.d[G.target] === 1 ? "press is" : "presses are"} left at best.`); render();
+}
+function showRun() {
+  const r = solveFrom(G.n, G.keys, G.start);
+  if (r.d[G.target] < 0) { $("#g-run").innerHTML = ""; say("No run of these keys reaches the target from the start. That is the point of this hole.", "bad"); after(); return; }
+  const steps = pathTo(r, G.start, G.target);
+  $("#g-run").innerHTML = steps.map(s => `<span>${KEYCAP[s[0]]} on ${s[1]}</span>`).join("");
+  clearInterval(G.runTimer); G.cur = G.start; G.hist = []; G.solved = false; G.hint = null; render();
+  let i = 0; G.runTimer = setInterval(() => { const s = steps[i++]; if (!s) { clearInterval(G.runTimer); return; } G.sel = s[1]; press(s[0]); }, 700);
+}
+// a random hole: a start and a target at a distance in a band, under today's keys unless the hole picks otherwise
+function random() {
+  const n = Math.random() < 0.3 ? 5 : 4, sp = space(n), set = "four", keys = PRESETS[set].keys;
+  const band = n === 5 ? [3, 6] : [3, 6];
+  for (let tries = 0; tries < 40; tries++) {
+    const s = Math.floor(Math.random() * sp.S.length), r = solveFrom(n, keys, s);
+    const c = r.order.filter(v => r.d[v] >= band[0] && r.d[v] <= band[1]);
+    if (!c.length) continue;
+    const t = c[Math.floor(Math.random() * c.length)];
+    load(-1, { name: "A random hole", s: { n, i: s }, t: { n, i: t }, set, brief: `Reach the target from this start; ${n} bullets.`, teach: "" }); return;
+  }
+}
+$("#t-undo").onclick = undo; $("#t-reset").onclick = reset; $("#t-hint").onclick = hint; $("#t-run").onclick = showRun; $("#t-new").onclick = () => { say("Searching…"); setTimeout(random, 20); };
+$("#g-board").addEventListener("keydown", e => {
+  if (e.key === "Escape") { $("#g-board").blur(); return; }
+  const ids = X.order(tree());
+  if (e.key === "ArrowUp" && !e.altKey) { const i = ids.indexOf(G.sel); G.sel = ids[Math.max(0, i - 1)]; G.hint = null; render(); $("#g-board").focus(); e.preventDefault(); return; }
+  if (e.key === "ArrowDown" && !e.altKey) { const i = ids.indexOf(G.sel); G.sel = ids[Math.min(ids.length - 1, i + 1)]; G.hint = null; render(); $("#g-board").focus(); e.preventDefault(); return; }
+  const combo = (e.altKey ? "Alt+" : "") + (e.shiftKey ? "Shift+" : "") + e.key;
+  const key = G.keys.find(k => SHORTCUT[k] === combo);
+  if (key) { e.preventDefault(); press(key); $("#g-board").focus(); }
+});
+document.querySelectorAll("[data-par]").forEach(el => {
+  const [h, set] = el.dataset.par.split(":"), s = HOLES[+h - 1], st = stateOf(s.start), tg = stateOf(s.target);
+  const v = parOf(st.n, PRESETS[set].keys, st.i, tg.i); el.textContent = v == null ? "no run" : v;
+});
+load(0);
+</script>
+
+<script>
+(() => {
+  if (window.self === window.top) return
+  const el = location.hash.length > 1 && document.getElementById(location.hash.slice(1))
+  if (!el) return
+  for (let n = el; n !== document.body; n = n.parentElement) {
+    for (const s of n.parentElement.children)
+      if (s !== n && !/^(SCRIPT|STYLE)$/.test(s.tagName)) s.style.setProperty("display", "none", "important")
+    n.style.margin = "0"; n.style.padding = "0"; n.style.maxWidth = "none"
+  }
+  document.body.style.margin = "0"; document.body.style.padding = "8px"
+  scrollTo(0, 0)
+})()
+</script>
