@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keys to Anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Same design system as the other explainers in this series. The phone is blue (--view), the laptop amber
+   (--hidden). Evidence tags run from solid (we ran it) to dashed (we applied a paper's rule). */
+:root {
+  --bg: #FFFFFF;
+  --surface: #F5F6F8;
+  --ink: #1A1E26;
+  --muted: #5B6371;
+  --rule: #E1E4E9;
+  --view: #2F52C4;
+  --view-soft: #E7ECFA;
+  --hidden: #A35F00;
+  --hidden-soft: #FAEBD2;
+  --ok: #1B7444;
+  --ok-soft: #DFF2E6;
+  --bad: #B0232B;
+  --bad-soft: #FAE3E4;
+  --lost: #7C8594;
+  --lost-soft: #E9EBEF;
+  --stray: #7A3FA3;
+  --stray-soft: #F0E6F7;
+  --d0: #3B6FD4;
+  --d1: #1F9E88;
+  --d2: #C7961B;
+  --d3: #D6602A;
+  --d4: #A8264C;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151B; --surface: #1A1E26; --ink: #E5E7EB; --muted: #9AA2AE; --rule: #2A303A;
+    --view: #93ABFF; --view-soft: #1D2744; --hidden: #F0B45A; --hidden-soft: #3A2B12;
+    --ok: #63CC90; --ok-soft: #14301F; --bad: #F2848A; --bad-soft: #3B1B1E; --lost: #8C95A5; --lost-soft: #262B34; --stray: #C79BE8; --stray-soft: #2E1F3A; --d0: #7FA2FF; --d1: #4CCDB2; --d2: #E8BE4A; --d3: #F28A55; --d4: #E86B93; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12151B; --surface: #1A1E26; --ink: #E5E7EB; --muted: #9AA2AE; --rule: #2A303A;
+  --view: #93ABFF; --view-soft: #1D2744; --hidden: #F0B45A; --hidden-soft: #3A2B12;
+  --ok: #63CC90; --ok-soft: #14301F; --bad: #F2848A; --bad-soft: #3B1B1E; --lost: #8C95A5; --lost-soft: #262B34; --stray: #C79BE8; --stray-soft: #2E1F3A; --d0: #7FA2FF; --d1: #4CCDB2; --d2: #E8BE4A; --d3: #F28A55; --d4: #E86B93; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 36px 80px; }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.12; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 700; letter-spacing: -0.015em; }
+h2 { font-size: 1.75rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+.lede { font-size: 1.25rem; line-height: 1.55; }
+header.top { display: grid; gap: 16px; margin-bottom: 28px; }
+.stack { display: grid; gap: 16px; }
+section.chapter { display: grid; gap: 18px; padding-top: 56px; margin-top: 56px; border-top: 1px solid var(--rule); }
+.num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--view); letter-spacing: 0.04em; }
+code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+em.term { font-style: normal; font-weight: 600; border-bottom: 1.5px solid var(--view); }
+.cite { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
+blockquote { margin: 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--rule); font-style: italic; }
+blockquote .cite { font-style: normal; white-space: nowrap; }
+.aside { font-size: 0.95rem; background: var(--surface); border-radius: 10px; padding: 14px 18px; display: grid; gap: 8px; }
+.aside h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.for-us { background: var(--view-soft); }
+.for-us h3 { color: var(--view); }
+.legend { font-size: 0.85rem; color: var(--muted); }
+
+/* Devices and evidence tags */
+.dev { font: 600 0.85em var(--font-display); padding: 0 7px; border-radius: 5px; white-space: nowrap; }
+.dev.a { background: var(--view-soft); color: var(--view); }
+.dev.b { background: var(--hidden-soft); color: var(--hidden); }
+.tag { font: 600 0.68rem var(--font-mono); letter-spacing: 0.03em; padding: 1px 7px; border-radius: 999px; border: 1.5px solid var(--ink); white-space: nowrap; vertical-align: 1px; }
+.tag.measured { background: var(--ink); color: var(--bg); }
+.tag.traced { background: var(--bg); color: var(--ink); }
+.tag.reported { background: var(--view-soft); color: var(--view); border-color: var(--view); }
+.tag.inferred { background: var(--bg); color: var(--muted); border: 1.5px dashed var(--muted); }
+.key { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px 18px; font-size: 0.88rem; background: var(--surface); border-radius: 10px; padding: 14px 18px; }
+.key div { display: grid; gap: 4px; justify-items: start; }
+.short { background: var(--surface); border-radius: 12px; padding: 18px 22px; display: grid; gap: 10px; }
+.short h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.short ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+
+/* Figure plates */
+figure { margin: 0; background: var(--surface); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+figcaption { font-size: 0.9rem; color: var(--muted); max-width: 76ch; }
+figcaption b { color: var(--ink); font-family: var(--font-display); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.controls .label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-right: 4px; }
+.btn { font: 600 0.85rem var(--font-display); border: 1.5px solid var(--ink); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.btn:hover { background: var(--view-soft); }
+.btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.btn:focus-visible { outline: 2px solid var(--view); outline-offset: 2px; }
+.story { font-size: 0.95rem; }
+.panes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); align-items: start; }
+.panes.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.panes.cards { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); align-items: stretch; }
+.panes.cards .pane { display: flex; flex-direction: column; }
+.panes.cards .verdict { margin-top: auto; }
+@media (max-width: 560px) { .panes.three { grid-template-columns: minmax(0, 1fr); } }
+.pane { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; min-width: 0; display: grid; align-content: start; }
+.pane-h { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.pane-h .nm { font-weight: 600; color: var(--ink); }
+.pane.pa .pane-h .nm { color: var(--view); }
+.pane.pb .pane-h .nm { color: var(--hidden); }
+.note { font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; padding: 6px 0; overflow-x: auto; }
+.ln { display: grid; grid-template-columns: 2.2em 1fr; min-height: 1.6em; }
+.ln .n { color: var(--muted); opacity: 0.55; text-align: right; padding-right: 10px; user-select: none; font-size: 0.75rem; line-height: 2.1; }
+.ln code { font-size: inherit; white-space: pre; padding-right: 10px; }
+.ln.na { background: var(--view-soft); }
+.ln.nb { background: var(--hidden-soft); }
+.ln.sa { background: var(--view-soft); }
+.ln.sb { background: var(--hidden-soft); }
+.ln.mk { background: var(--bad-soft); color: var(--bad); }
+.ln.dup code { text-decoration: underline wavy var(--bad); text-underline-offset: 3px; }
+.empty { color: var(--muted); font-family: var(--font-mono); font-size: 0.78rem; padding: 6px 12px; }
+.draw { margin: 0; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.6; white-space: pre; padding: 8px 12px; overflow-x: auto; }
+.verdict { font: 600 0.78rem var(--font-mono); padding: 7px 10px; border-top: 1px solid var(--rule); line-height: 1.45; }
+.verdict.ok { color: var(--ok); background: var(--ok-soft); }
+.verdict.bad { color: var(--bad); background: var(--bad-soft); }
+.verdict.na { color: var(--muted); }
+.says { font-size: 0.86rem; line-height: 1.5; padding: 8px 12px; color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; }
+.chip { font: 600 0.7rem var(--font-mono); padding: 1px 8px; border-radius: 999px; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.na { background: var(--rule); color: var(--muted); }
+.fam { font: 500 0.66rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding: 8px 12px 0; }
+.rowhead { font: 600 0.8rem var(--font-display); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.result-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); align-items: start; }
+
+/* Bars */
+.bars { display: grid; gap: 10px; max-width: 640px; }
+.bar { display: grid; grid-template-columns: 7.5em 1fr; gap: 10px; align-items: center; font-family: var(--font-mono); font-size: 0.8rem; }
+.bar .track { background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; height: 24px; position: relative; }
+.bar .fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 3.4em; }
+.bar .fill.g { background: var(--hidden-soft); color: var(--hidden); }
+.bar .fill.t { background: var(--view-soft); color: var(--view); }
+.bargroup { display: grid; gap: 6px; }
+.bargroup h4 { margin: 0; font: 600 0.8rem var(--font-display); }
+
+/* Tables */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 760px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); }
+th { font: 600 0.75rem var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+td.term { font-weight: 600; font-family: var(--font-display); }
+.twocol { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.card { background: var(--surface); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; font-size: 0.93rem; align-content: start; }
+.card h3 { font-size: 0.95rem; }
+.colophon { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; display: grid; gap: 8px; max-width: 80ch; }
+@media (max-width: 560px) { body { font-size: 1rem; } h2 { font-size: 1.45rem; } figure { padding: 12px; } }
+
+/* Additions for this page. Dots on the map are coloured by how deeply the outline nests: --d0 (flat) to --d4. */
+.ol { font: 0.8rem/1.6 var(--font-mono); padding: 6px 0; overflow-x: auto; }
+.ol div { padding: 0 10px; white-space: pre; min-height: 1.6em; }
+.ol .hb { background: var(--hidden-soft); }
+.ol .none { color: var(--muted); font-style: italic; white-space: normal; }
+.sel { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.sel label, .lab { font: 0.75rem var(--font-mono); color: var(--muted); }
+.chip-btn { font: 600 0.78rem var(--font-mono); border: 1.5px solid var(--ink); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 4px 9px; cursor: pointer; }
+.chip-btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.chip-btn:focus-visible, .btn:focus-visible { outline: 2px solid var(--view); outline-offset: 2px; }
+.chip-btn.dis { opacity: 0.4; }
+.mapbox { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .mapbox { grid-template-columns: minmax(0, 1fr); } }
+.cv { position: relative; background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; aspect-ratio: 1 / 1; width: 100%; overflow: hidden; touch-action: manipulation; }
+.cv canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
+.side { display: grid; gap: 10px; min-width: 0; }
+.statline { font: 0.78rem/1.5 var(--font-mono); color: var(--ink); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; }
+.statline b { font-variant-numeric: tabular-nums; }
+.ring { display: grid; gap: 3px; font: 0.72rem var(--font-mono); color: var(--muted); }
+.ring .r { display: grid; grid-template-columns: 6.2em minmax(0, 1fr) 3.6em; gap: 6px; align-items: center; }
+.ring .bar { height: 9px; border-radius: 2px; background: var(--view); min-width: 1px; }
+.ring .r > span:first-child { white-space: nowrap; }
+.ring .c { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+.glyphs { display: grid; gap: 8px; }
+.glyph { background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; min-width: 0; }
+.glyph .gh { font: 600 0.7rem var(--font-mono); color: var(--muted); padding: 4px 10px; border-bottom: 1px solid var(--rule); display: flex; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
+.path { display: grid; gap: 6px; }
+.step { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; }
+.step .k { font: 600 0.72rem var(--font-mono); background: var(--ink); color: var(--bg); border-radius: 5px; padding: 2px 7px; white-space: nowrap; margin-top: 4px; }
+.step .glyph { box-shadow: none; }
+.dots { display: flex; gap: 10px; flex-wrap: wrap; font: 0.72rem var(--font-mono); color: var(--muted); }
+.dots i { display: inline-block; width: 0.8em; height: 0.8em; border-radius: 50%; margin-right: 4px; vertical-align: -0.05em; }
+.hbars { display: grid; gap: 10px; }
+.hrow { display: grid; grid-template-columns: 14em minmax(0, 1fr) 3.4em; gap: 6px 12px; align-items: center; }
+@media (max-width: 640px) { .hrow { grid-template-columns: minmax(0, 1fr) 3.4em; } .hrow .nm { grid-column: 1 / -1; } }
+.hrow .nm { font: 600 0.84rem var(--font-display); }
+.hrow .nm small { display: block; font: 400 0.7rem var(--font-mono); color: var(--muted); }
+.hrow .track { display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: var(--rule); }
+.hrow .track i { display: block; height: 100%; }
+.hrow .mean { font: 600 0.78rem var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.hrow.d18 .nm::after { content: " · decision 18"; font: 500 0.66rem var(--font-mono); color: var(--view); }
+.legend-row { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font: 0.74rem var(--font-mono); color: var(--muted); }
+.legend-row span { display: inline-flex; align-items: center; gap: 5px; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.p1 { background: var(--d1); } .p2 { background: var(--d0); } .p3 { background: var(--d2); } .p4 { background: var(--d3); } .p5 { background: var(--d4); }
+.tb { overflow-x: auto; }
+table.kt { min-width: 520px; font-size: 0.86rem; }
+table.kt td, table.kt th { padding: 6px 12px 6px 0; }
+table.kt td.y { color: var(--ok); font-weight: 600; } table.kt td.n { color: var(--bad); }
+.num-inline { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Learning series · computed map · built 2026-10-11 from the research library</div>
+    <h1>Keys to Anywhere</h1>
+    <p class="lede col">Think of every arrangement of a few bullets as a place, and every key press that moves a bullet as a step between two places. This page maps that space for outlines of up to five bullets. It shows how many presses it takes to get from one outline to another, which keys the space can do without, and what the two answers to decision 18 (a key that carries a bullet out of its list, or a command that names the destination) would change.</p>
+    <p class="legend col">Every number comes from a small model written for this page: it moves a bullet, with what is under it, on labelled outlines. It is not the plugin’s code. For today’s four keys, the plugin’s own code gives the same outline as the model on every key press at three, four and five bullets <span class="tag measured">measured</span> (plugin commit 4f06fe3; see Where It Lands). Outlines are drawn as Markdown source, two spaces per level.</p>
+  </header>
+
+  <div class="key" aria-label="How we know">
+    <div><span class="tag measured">measured</span><span>We counted it, with a script, on the model of chapter 1.</span></div>
+    <div><span class="tag reported">reported</span><span>A note in the library or a paper says it.</span></div>
+    <div><span class="tag inferred">inferred</span><span>Our reading of what the counts mean for the plugin.</span></div>
+  </div>
+
+  <div class="short" style="margin-top:24px">
+    <h3>The short version</h3>
+    <ol class="col">
+      <li>Four keys (indent, outdent, move up, move down) get from any outline of up to five bullets to any other. To move one bullet, with what is under it, to any other place takes <b data-s="mean:5:four">–</b> presses on average for five bullets and at most <b data-s="max:5:four">–</b>. <span class="tag measured">measured</span></li>
+      <li>A change of the whole outline can take far more: up to <b data-s="amax:5:four">–</b> presses for five bullets. <span class="tag measured">measured</span></li>
+      <li>If move up and move down could carry a bullet out of its list (what #223 asks for), the average for one bullet drops to <b data-s="mean:5:leave">–</b> and the share done in one press rises from <b data-s="share1:5:four">–</b> to <b data-s="share1:5:leave">–</b>. A command with a typed destination makes every move one command. The model counts presses and nothing else about the two options. <span class="tag measured">measured</span></li>
+      <li>Of the 511 combinations of the nine keys, <b data-s="sets">–</b> reach every outline from every other, and every one of them contains indent. The smallest have two keys: indent with a move up, or down, that leaves its list. The plain move keys need both indent and outdent. <span class="tag measured">measured</span></li>
+      <li>With indent and outdent, move up and move down reach the same outlines, though not in the same number of presses. <span class="tag measured">measured</span></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <section class="chapter" id="space">
+    <div class="num">1 · the model</div>
+    <h2>An outline is a place, a key press is a step</h2>
+    <div class="col stack">
+      <p>An outline here is a forest of labelled bullets, <code>a</code>, <code>b</code>, <code>c</code> and so on, each with a place: its parent and its position among that parent’s children. Three bullets can be arranged <span class="num-inline" data-s="states:3"></span> ways, four <span class="num-inline" data-s="states:4"></span> ways and five <span class="num-inline" data-s="states:5"></span> ways. A key press takes one bullet, with everything under it, to a new place. Nine keys are modelled:</p>
+      <ul class="plain">
+        <li><b>indent</b> (Tab): the bullet becomes the last child of the bullet above it.</li>
+        <li><b>outdent</b> (Shift-Tab): the bullet moves to just after its parent, and its later siblings become its last children (the stated effect in foundation law O11). <b>outdent alone</b> leaves those siblings where they were.</li>
+        <li><b>up</b>, <b>down</b>: swap with the sibling above or below. At the end of the list the key does nothing, which is the refusal that issue #223 reports.</li>
+        <li><b>up and down that leave the list</b>: the same, except that at the end of a list the bullet moves out to just before or after its parent. This is the change #223 asks for.</li>
+        <li><b>to top</b>, <b>to bottom</b>: the bullet goes to the first or last place among its siblings.</li>
+      </ul>
+      <p>A move of one bullet means taking it out, with everything under it, and putting it back anywhere else. The distance between two outlines is the fewest presses, on any bullets, that turn one into the other. Which Edits Collide uses the same gestures to ask what happens when two devices press them at once.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="chapter" id="map">
+    <div class="num">2 · the map</div>
+    <h2>Every outline, by presses from the start</h2>
+    <div class="col stack">
+      <p>The start sits in the middle. Each ring is one more press away, and each dot is an outline, coloured by how deeply it nests. Tap or hover a dot to see the outline and the shortest run of presses to it. Switch keys off and on to see what the space looks like without them: dots that can no longer be reached disappear, and the rings change.</p>
+    </div>
+    <figure id="fig1">
+      <div class="sel"><span class="lab">bullets</span><span id="m-n" class="controls"></span></div>
+      <div class="sel"><span class="lab">keys</span><span id="m-keys" class="controls"></span></div>
+      <div class="sel"><span class="lab">start from</span><span id="m-start" class="controls"></span></div>
+      <div class="sel"><span class="lab">sets</span><span id="m-sets" class="controls"></span></div>
+      <div class="mapbox">
+        <div class="cv"><canvas id="m-cv" aria-label="Map of outlines by number of key presses from the start"></canvas></div>
+        <div class="side">
+          <div class="statline" id="m-stat"></div>
+          <div class="ring" id="m-ring"></div>
+          <div class="dots" id="m-legend"></div>
+          <div class="glyphs" id="m-info"></div>
+        </div>
+      </div>
+      <figcaption><b>Figure 1.</b> The outlines reachable from the start with the keys that are on. The distance of a dot from the centre is the number of presses; its angle follows the shortest path tree, so a dot sits in the wedge of the outline it was reached from. <span class="tag measured">measured</span></figcaption>
+    </figure>
+  </section>
+
+  <!-- 3 -->
+  <section class="chapter" id="moves">
+    <div class="num">3 · the cost of one move</div>
+    <h2>What decision 18 changes, in presses</h2>
+    <div class="col stack">
+      <p>Decision 18 asks whether the move past the end of a list (#223) is given to the key or to an addressed command. The library lays out the precedents for both: some editors change what the key does at a list’s end, and AUGMENT, described in 1984, moved a branch with one command and a typed destination. <span class="tag reported">reported</span> The model can count what each would do to the number of presses. It cannot count what each costs a user in surprise or learning, which is what the decision weighs.</p>
+    </div>
+    <figure id="fig2">
+      <div class="sel"><span class="lab">bullets</span><span id="h-n" class="controls"></span></div>
+      <div class="sel"><span class="lab">count</span><span id="h-what" class="controls"></span></div>
+      <div class="legend-row" id="h-legend"></div>
+      <div class="hbars" id="h-bars"></div>
+      <figcaption id="h-cap"></figcaption>
+    </figure>
+    <div class="col stack">
+      <ul class="plain">
+        <li><b>Leaving the list helps most where the four keys are slowest.</b> For five bullets the share of one-bullet moves that take four or five presses falls from <b data-s="share45:5:four">–</b> with the four keys to <b data-s="share45:5:leave">–</b> when the keys leave the list.</li>
+        <li><b>The worst case does not move.</b> One-bullet moves take at most as many presses as there are bullets under every one of the key sets here, and an addressed command is the only option that removes that growth. <span class="tag measured">measured</span></li>
+        <li><b>Leaving the list shortens whole-outline changes too</b>: from <b data-s="amean:5:four">–</b> to <b data-s="amean:5:leave">–</b> presses on average for five bullets, and the longest from <b data-s="amax:5:four">–</b> to <b data-s="amax:5:leave">–</b>. <span class="tag measured">measured</span></li>
+        <li><b>Adding “to top” and “to bottom” helps less than leaving the list</b>: for one bullet the average goes from <b data-s="mean2:5:four">–</b> to <b data-s="mean2:5:ends">–</b>, against <b data-s="mean2:5:leave">–</b> when the keys leave the list. <span class="tag measured">measured</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="chapter" id="needed">
+    <div class="num">4 · which keys are needed</div>
+    <h2>Reaching everything from everything</h2>
+    <div class="col stack">
+      <p>Dix called a system <em class="term">strongly reachable</em> when every state can be reached from every other, “you can get anywhere from anywhere”, and the library’s law O10 asks for it of outline operations. <span class="tag reported">reported</span> The table tests every combination of the four keys. A tick means that from any outline of four bullets, those keys alone reach any other.</p>
+    </div>
+    <div class="tb"><table class="kt" id="k-table"></table></div>
+    <div class="col stack">
+      <p id="k-note"></p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="chapter" id="for-us">
+    <div class="num">5 · for True Outliner</div>
+    <h2>What this suggests, and what it does not</h2>
+    <div class="col stack">
+      <ul class="plain">
+        <li><b>The model satisfies O10’s reachability for bullets that only move.</b> The four keys reach every arrangement of up to five labelled bullets from every other. The law is about the plugin and covers typing, kinds and deletion, which the model leaves out. <span class="tag inferred">inferred</span></li>
+        <li><b>Decision 18 can be read as a trade between two kinds of saving.</b> A key that leaves the list shortens many moves by a press or two and also makes outdent unnecessary for reachability; an addressed command shortens the long moves to one command and leaves the keys as they are. The counts do not choose between them, because what a key means after it changes, and what a typed destination costs to type, are not in the model. <span class="tag inferred">inferred</span></li>
+        <li><b>The planned check N11 does this on the plugin.</b> The foundation plans an enumerated check that, for each outline of up to three or four nodes and each outline that differs from it in one node’s place, finds an operation or a run of operations that maps the first to the second. This page is the same count on a model, and N11 would run it on <code>planKey</code>. <span class="tag inferred">inferred</span></li>
+        <li><b>The model’s indent and outdent match the plugin only as far as the foundation states them.</b> Outdent taking its later siblings is the foundation’s statement for the plugin (O11); how the plugin treats headings and mixed lists is not in the model. <span class="tag inferred">inferred</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p><b>Method.</b> <code>reach/reach.js</code> builds every labelled outline of n bullets (every shape, every labelling), a table of edges for each key (the outline after pressing that key on each bullet, where it changes anything), and a breadth-first search over the keys that are on. <code>reach/stats.js</code> counts, for n = 3, 4 and 5, the presses from every outline to every outline that differs from it by moving one bullet with its subtree (<span data-s="pairs:5"></span> pairs for n = 5), and to every other outline. <code>reach/subsets.js</code> tests every combination of the nine keys for strong reachability at n = 3 and 4 and ten chosen combinations at n = 5; both sizes agree. The page recomputes the map in the browser from the same code.</p>
+    <p><b>Limits.</b> Outlines are forests of bullets only: no headings, text, folds, selections or typing. Each key acts on one bullet at a time. The distance counts presses, not time or effort. Outlines of up to five bullets, because the number of outlines grows as n! times the nth Catalan number (95,040 for six).</p>
+    <p><b>Sources.</b> Library notes: <i>reachability-and-one-step-forms</i> and <i>counting-the-grammar</i> in the area on interaction and keyboard grammar; laws O10, O11 and O3; decisions D18 and D21; dix1991 for strong reachability; engelbart1984 for AUGMENT’s addressed move. Related pages in this series: Which Edits Collide and When Two Moves Meet.</p>
+  </footer>
+</div>
+
+<script>
+// Crossing-edits model: an outline is an ordered forest; an edit is one keyboard gesture on one bullet.
+// Three ways to name the edit when it is replayed on a state the other edit has already changed:
+//   "line"  the gesture on whichever bullet sits on the same line number as when it was made
+//   "id"    the gesture on the same bullet, evaluated again against the current outline
+//   "fixed" the gesture turned into a plain instruction (which bullet goes where) when it was made
+const X = (() => {
+  const ROOT = "#";
+  const clone = t => { const o = {}; for (const k in t) o[k] = { text: t[k].text, parent: t[k].parent, kids: t[k].kids.slice() }; return o; };
+  const fromForest = (forest) => { // forest: [[id, text, [children...]]...] nested
+    const t = { [ROOT]: { text: "", parent: null, kids: [] } };
+    const add = (n, p) => { const [id, text, kids] = n; t[id] = { text, parent: p, kids: [] }; t[p].kids.push(id); (kids || []).forEach(k => add(k, id)); };
+    forest.forEach(n => add(n, ROOT));
+    return t;
+  };
+  const order = (t, id = ROOT, out = []) => { for (const k of t[id].kids) { out.push(k); order(t, k, out); } return out; };
+  const isAnc = (t, a, d) => { for (let n = t[d] && t[d].parent; n != null; n = t[n].parent) if (n === a) return true; return false; };
+  const depth = (t, id) => { let d = 0; for (let n = t[id].parent; n !== ROOT; n = t[n].parent) d++; return d; };
+  const detach = (t, id) => { const p = t[t[id].parent]; p.kids.splice(p.kids.indexOf(id), 1); };
+  const sibs = (t, id) => t[t[id].parent].kids;
+  const prevSib = (t, id) => { const s = sibs(t, id), i = s.indexOf(id); return i > 0 ? s[i - 1] : null; };
+  const nextSib = (t, id) => { const s = sibs(t, id), i = s.indexOf(id); return i < s.length - 1 ? s[i + 1] : null; };
+  const sig = t => { const f = id => t[id].kids.map(k => k + ":" + t[k].text + (t[k].kids.length ? "(" + f(k) + ")" : "")).join(","); return f(ROOT); };
+  const lines = t => order(t).map(id => ({ id, depth: depth(t, id), text: t[id].text }));
+
+  // plain instructions; each returns null if it cannot be carried out
+  const prim = {
+    setText: (t, a) => { if (!t[a.t]) return null; t[a.t].text = a.x; return t; },
+    insertAfter: (t, a) => { if (!t[a.t] || t[a.n]) return null; const p = t[a.t].parent; t[a.n] = { text: a.x, parent: p, kids: [] }; const k = t[p].kids; k.splice(k.indexOf(a.t) + 1, 0, a.n); return t; },
+    remove: (t, a) => { if (!t[a.t]) return null; const drop = id => { t[id].kids.slice().forEach(drop); delete t[id]; }; detach(t, a.t); drop(a.t); return t; },
+    moveInto: (t, a) => { if (!t[a.t] || !t[a.p] || a.t === a.p || isAnc(t, a.t, a.p)) return null; detach(t, a.t); t[a.p].kids.push(a.t); t[a.t].parent = a.p; return t; },
+    moveAfter: (t, a) => { if (!t[a.t] || !t[a.a] || a.t === a.a || isAnc(t, a.t, a.a)) return null; detach(t, a.t); const p = t[a.a].parent; const k = t[p].kids; k.splice(k.indexOf(a.a) + 1, 0, a.t); t[a.t].parent = p; return t; },
+    moveBefore: (t, a) => { if (!t[a.t] || !t[a.a] || a.t === a.a || isAnc(t, a.t, a.a)) return null; detach(t, a.t); const p = t[a.a].parent; const k = t[p].kids; k.splice(k.indexOf(a.a), 0, a.t); t[a.t].parent = p; return t; },
+    adopt: (t, a) => { // bullets named in a.ids that still exist move under a.t, last
+      if (!t[a.t]) return null;
+      for (const id of a.ids) if (t[id] && id !== a.t && !isAnc(t, id, a.t)) { detach(t, id); t[a.t].kids.push(id); t[id].parent = a.t; }
+      return t; },
+    merge: (t, a) => { if (!t[a.t] || !t[a.s] || a.t === a.s || isAnc(t, a.t, a.s) || isAnc(t, a.s, a.t)) return null; t[a.s].text += t[a.t].text; for (const k of t[a.t].kids.slice()) { t[a.s].kids.push(k); t[k].parent = a.s; } t[a.t].kids = []; detach(t, a.t); delete t[a.t]; return t; },
+  };
+  const KINDS = ["edit", "add", "delete", "indent", "outdent", "up", "down", "join"];
+  // gesture(kind, tree, target, who) -> list of instructions, or null when the gesture is not available there
+  const gesture = (kind, t, id, who) => {
+    if (!t[id]) return null;
+    const new_ = who === "A" ? "x" : "y", txt = who;
+    switch (kind) {
+      case "edit": return [["setText", { t: id, x: txt + "!" }]];
+      case "add": return [["insertAfter", { t: id, n: new_, x: txt + "+" }]];
+      case "delete": return [["remove", { t: id }]];
+      case "indent": { const p = prevSib(t, id); return p ? [["moveInto", { t: id, p }]] : null; }
+      case "outdent": { const g = t[id].parent; if (g === ROOT) return null; const f = sibs(t, id); const after = f.slice(f.indexOf(id) + 1); return [["moveAfter", { t: id, a: g }], ["adopt", { t: id, ids: after }]]; }
+      case "up": { const s = prevSib(t, id); return s ? [["moveBefore", { t: id, a: s }]] : null; }
+      case "down": { const s = nextSib(t, id); return s ? [["moveAfter", { t: id, a: s }]] : null; }
+      case "join": { const s = prevSib(t, id); return s ? [["merge", { t: id, s }]] : null; }
+    }
+  };
+  // an edit as authored: what it names, and what is replayed
+  const author = (mode, base, kind, id, who) => {
+    const steps = gesture(kind, base, id, who);
+    if (!steps) return null;
+    const line = order(base).indexOf(id);
+    return { mode, kind, who, id, line, steps };
+  };
+  // replay on state t; returns {tree, id} (id: the bullet the edit landed on), or null if the edit has no effect there
+  const replay = (e, t) => {
+    let steps, id = e.id;
+    if (e.mode === "fixed") steps = e.steps;
+    else {
+      if (e.mode === "line") id = order(t)[e.line];
+      if (id == null) return null;
+      steps = gesture(e.kind, t, id, e.who);
+      if (!steps) return null;
+    }
+    const w = clone(t);
+    for (const [name, a] of steps) if (!prim[name](w, a)) return null;
+    return { tree: w, id };
+  };
+  // both orders of two edits made on the same base outline
+  const cross = (mode, base, ka, ta, kb, tb) => {
+    const A = author(mode, base, ka, ta, "A"), B = author(mode, base, kb, tb, "B");
+    if (!A || !B) return null;
+    const ra = replay(A, base), rb = replay(B, base);
+    if (!ra || !rb) return null; // an edit that does nothing on its own is not a situation
+    const a1 = ra.tree, b1 = rb.tree;
+    const rab = replay(B, a1), rba = replay(A, b1);
+    const ab = rab ? rab.tree : a1, ba = rba ? rba.tree : b1;
+    const same = sig(ab) === sig(ba);
+    const dropped = !rab || !rba;
+    const stray = (rab && rab.id !== B.id) || (rba && rba.id !== A.id);
+    const cls = !same ? "diverge" : stray ? "misdirected" : dropped ? "lost" : "independent";
+    return { cls, A, B, aThenB: ab, bThenA: ba, aOnly: a1, bOnly: b1, droppedAB: !rab, droppedBA: !rba, strayAB: !!(rab && rab.id !== B.id), strayBA: !!(rba && rba.id !== A.id) };
+  };
+  const relation = (t, a, b) => {
+    if (a === b) return "same";
+    if (t[a].parent === t[b].parent) { const s = sibs(t, a); return Math.abs(s.indexOf(a) - s.indexOf(b)) === 1 ? "next" : "sibling"; }
+    if (t[a].parent === b || t[b].parent === a) return "child";
+    if (isAnc(t, a, b) || isAnc(t, b, a)) return "ancestor";
+    return "other";
+  };
+  const REL = ["same", "next", "sibling", "child", "ancestor", "other"];
+  // every ordered forest of n nodes, ids a,b,c.. in reading order
+  const forests = (n) => {
+    const shapes = (m) => { // list of forests as arrays of subtree sizes trees
+      if (m === 0) return [[]];
+      const out = [];
+      for (let k = 1; k <= m; k++) for (const kids of shapes(k - 1)) for (const rest of shapes(m - k)) out.push([kids].concat(rest));
+      return out;
+    };
+    return shapes(n).map(sh => { let c = 0; const mk = f => f.map(kids => { const id = String.fromCharCode(97 + c++); return [id, id, mk(kids)]; }); return fromForest(mk(sh)); });
+  };
+  const tally = (modes, maxNodes) => {
+    const out = {}, F = []; for (let n = 1; n <= maxNodes; n++) F[n] = forests(n);
+    for (const mode of modes) {
+      const cells = {}; let total = 0;
+      for (const ka of KINDS) for (const kb of KINDS) { cells[ka + "|" + kb] = {}; for (const r of REL) cells[ka + "|" + kb][r] = { independent: 0, lost: 0, misdirected: 0, diverge: 0, ex: {} }; }
+      for (let n = 1; n <= maxNodes; n++) F[n].forEach((base, i) => {
+        const ids = order(base);
+        for (const ka of KINDS) for (const kb of KINDS) for (const ta of ids) for (const tb of ids) {
+          const r = cross(mode, base, ka, ta, kb, tb); if (!r) continue;
+          const rel = relation(base, ta, tb); const c = cells[ka + "|" + kb][rel];
+          c[r.cls]++; total++;
+          if (!c.ex[r.cls]) c.ex[r.cls] = [n, i, ta, tb];
+        }
+      });
+      out[mode] = { total, cells };
+    }
+    return out;
+  };
+  return { ROOT, KINDS, REL, clone, fromForest, order, lines, sig, depth, forests, cross, relation, tally, gesture, author, replay, prim, isAnc, prevSib, nextSib, sibs, detach };
+})();
+
+// Keys to anywhere: outlines of n labelled bullets as states, key presses as edges.
+// A "move" is one bullet with everything under it taken out and put back anywhere else.
+const R = (() => {
+  const E = typeof module !== "undefined" ? require("../commute/engine.js") : X;
+  const { ROOT, clone, order, sig, prim, prevSib, nextSib, sibs, isAnc } = E;
+  const perms = (a) => a.length <= 1 ? [a] : a.flatMap((x, i) => perms(a.slice(0, i).concat(a.slice(i + 1))).map(p => [x].concat(p)));
+  const relabel = (t, map) => { const o = { [ROOT]: { text: "", parent: null, kids: [] } }; for (const id in t) { if (id === ROOT) continue; const m = map[id]; o[m] = { text: m, parent: t[id].parent === ROOT ? ROOT : map[t[id].parent], kids: t[id].kids.map(k => map[k]) }; } o[ROOT].kids = t[ROOT].kids.map(k => map[k]); return o; };
+  const states = (n) => {
+    const ids = Array.from({ length: n }, (_, i) => String.fromCharCode(97 + i));
+    const out = [], seen = new Set();
+    for (const shape of E.forests(n)) for (const p of perms(ids)) { const map = {}; ids.forEach((id, i) => map[id] = p[i]); const t = relabel(shape, map); const s = sig(t); if (!seen.has(s)) { seen.add(s); out.push(t); } }
+    return out;
+  };
+  // each key returns instructions for bullet id in tree t, or null when the key does nothing there
+  const KEYS = {
+    indent: (t, id) => { const p = prevSib(t, id); return p ? [["moveInto", { t: id, p }]] : null; },
+    outdent: (t, id) => { const g = t[id].parent; if (g === ROOT) return null; const f = sibs(t, id); return [["moveAfter", { t: id, a: g }], ["adopt", { t: id, ids: f.slice(f.indexOf(id) + 1) }]]; },
+    outdentAlone: (t, id) => { const g = t[id].parent; return g === ROOT ? null : [["moveAfter", { t: id, a: g }]]; },
+    up: (t, id) => { const s = prevSib(t, id); return s ? [["moveBefore", { t: id, a: s }]] : null; },
+    down: (t, id) => { const s = nextSib(t, id); return s ? [["moveAfter", { t: id, a: s }]] : null; },
+    upLeave: (t, id) => { const s = prevSib(t, id); if (s) return [["moveBefore", { t: id, a: s }]]; const g = t[id].parent; return g === ROOT ? null : [["moveBefore", { t: id, a: g }]]; },
+    downLeave: (t, id) => { const s = nextSib(t, id); if (s) return [["moveAfter", { t: id, a: s }]]; const g = t[id].parent; return g === ROOT ? null : [["moveAfter", { t: id, a: g }]]; },
+    top: (t, id) => { const f = sibs(t, id); return f[0] === id ? null : [["moveBefore", { t: id, a: f[0] }]]; },
+    bottom: (t, id) => { const f = sibs(t, id); return f[f.length - 1] === id ? null : [["moveAfter", { t: id, a: f[f.length - 1] }]]; },
+  };
+  const press = (t, key, id) => { const steps = KEYS[key](t, id); if (!steps) return null; const w = clone(t); for (const [nm, a] of steps) if (!prim[nm](w, a)) return null; return sig(w) === sig(t) ? null : w; };
+  const SETS = {
+    four: { name: "four keys", keys: ["indent", "outdent", "up", "down"] },
+    alone: { name: "four keys, outdent leaves its later siblings", keys: ["indent", "outdentAlone", "up", "down"] },
+    leave: { name: "four keys, up and down also leave the parent", keys: ["indent", "outdent", "upLeave", "downLeave"] },
+    ends: { name: "four keys and move to top or bottom", keys: ["indent", "outdent", "up", "down", "top", "bottom"] },
+  };
+  // every outline reached by taking one bullet and what is under it out and putting it back somewhere else
+  const moves = (t) => {
+    const out = new Map();
+    for (const id of order(t)) {
+      const w0 = clone(t); const par = w0[id].parent; const idx0 = w0[par].kids.indexOf(id); w0[par].kids.splice(idx0, 1);
+      const targets = [ROOT].concat(order(w0).filter(x => x !== id && !isAnc(t, id, x)));
+      for (const p of targets) for (let i = 0; i <= w0[p].kids.length; i++) {
+        if (p === par && i === idx0) continue;
+        const w = clone(w0); w[p].kids.splice(i, 0, id); w[id].parent = p;
+        const s = sig(w); if (!out.has(s)) out.set(s, { tree: w, id, p, i });
+      }
+    }
+    return out;
+  };
+  // the whole graph for one key set
+  const graph = (n, keys, list) => {
+    const S = list || states(n), idx = new Map(S.map((t, i) => [sig(t), i]));
+    const adj = S.map(t => { const e = new Map(); for (const k of keys) for (const id of order(t)) { const w = press(t, k, id); if (w) { const j = idx.get(sig(w)); if (!e.has(j)) e.set(j, { key: k, id }); } } return e; });
+    return { S, idx, adj };
+  };
+  // edges of one key only, as arrays of [from][to, id]
+  const keyEdges = (S, idx, key) => S.map(t => { const e = []; for (const id of order(t)) { const w = press(t, key, id); if (w) e.push([idx.get(sig(w)), id]); } return e; });
+  // BFS over several keys' edge tables; via[v] = [key, bullet] of the press that first reached v
+  const bfsKeys = (S, tables, keys, s) => { const n = S.length, d = new Int16Array(n).fill(-1), prev = new Int32Array(n).fill(-1), via = new Array(n); d[s] = 0; const q = [s]; for (let h = 0; h < q.length; h++) { const u = q[h]; for (const k of keys) for (const [v, id] of tables[k][u]) if (d[v] < 0) { d[v] = d[u] + 1; prev[v] = u; via[v] = [k, id]; q.push(v); } } return { d, prev, via, order: q }; };
+  const bfs = (g, s) => { const d = new Int16Array(g.S.length).fill(-1), prev = new Int32Array(g.S.length).fill(-1); d[s] = 0; const q = [s]; for (let h = 0; h < q.length; h++) { const u = q[h]; for (const v of g.adj[u].keys()) if (d[v] < 0) { d[v] = d[u] + 1; prev[v] = u; q.push(v); } } return { d, prev }; };
+  return { X: E, states, KEYS, SETS, press, moves, graph, bfs, keyEdges, bfsKeys };
+})();
+
+const STATS = {"3":{"states":30,"pairs":246,"sets":{"four":{"hist":{"1":90,"2":108,"3":48},"mean":1.829268292682927,"max":3,"unreachable":0,"allHist":{"1":96,"2":198,"3":288,"4":210,"5":72,"6":6},"allMean":2.9793103448275864,"allMax":6},"alone":{"hist":{"1":96,"2":108,"3":42},"mean":1.7804878048780488,"max":3,"unreachable":0,"allHist":{"1":96,"2":210,"3":264,"4":204,"5":78,"6":18},"allMean":3.013793103448276,"allMax":6},"leave":{"hist":{"1":120,"2":102,"3":24},"mean":1.6097560975609757,"max":3,"unreachable":0,"allHist":{"1":126,"2":306,"3":300,"4":132,"5":6},"allMean":2.524137931034483,"allMax":5},"ends":{"hist":{"1":102,"2":108,"3":36},"mean":1.7317073170731707,"max":3,"unreachable":0,"allHist":{"1":108,"2":216,"3":288,"4":198,"5":54,"6":6},"allMean":2.8758620689655174,"allMax":6}}},"4":{"states":336,"pairs":5784,"sets":{"four":{"hist":{"1":1512,"2":2160,"3":1536,"4":576},"mean":2.203319502074689,"max":4,"unreachable":0,"allHist":{"1":1680,"2":5472,"3":13704,"4":24936,"5":31344,"6":24336,"7":9576,"8":1464,"9":48},"allMean":4.756503198294243,"allMax":9},"alone":{"hist":{"1":1680,"2":2256,"3":1416,"4":432},"mean":2.103734439834025,"max":4,"unreachable":0,"allHist":{"1":1680,"2":5856,"3":14040,"4":24096,"5":29232,"6":22920,"7":11280,"8":3048,"9":408},"allMean":4.8204690831556505,"allMax":9},"leave":{"hist":{"1":2016,"2":2280,"3":1200,"4":288},"mean":1.95850622406639,"max":4,"unreachable":0,"allHist":{"1":2184,"2":8808,"3":22464,"4":35136,"5":30600,"6":12168,"7":1200},"allMean":4.1057569296375265,"allMax":7},"ends":{"hist":{"1":1800,"2":2280,"3":1368,"4":336},"mean":2.04149377593361,"max":4,"unreachable":0,"allHist":{"1":1968,"2":6816,"3":16680,"4":28416,"5":31632,"6":19800,"7":6360,"8":840,"9":48},"allMean":4.512579957356077,"allMax":9}}},"5":{"states":5040,"pairs":149280,"sets":{"four":{"hist":{"1":30240,"2":47040,"3":40320,"4":24000,"5":7680},"mean":2.5434083601286175,"max":5,"unreachable":0,"allHist":{"1":34560,"2":151440,"3":519600,"4":1419720,"5":3074880,"6":5193840,"7":6468120,"8":5345400,"9":2564040,"10":579120,"11":45120,"12":720},"allMean":6.75387217796426,"allMax":12},"alone":{"hist":{"1":34560,"2":51120,"3":39240,"4":19440,"5":4920},"mean":2.3906752411575565,"max":5,"unreachable":0,"allHist":{"1":34560,"2":162120,"3":558720,"4":1486200,"5":3091800,"6":4960080,"7":5945160,"8":5048160,"9":2880960,"10":1018560,"11":194160,"12":16080},"allMean":6.837288199661686,"allMax":12},"leave":{"hist":{"1":40320,"2":52080,"3":36600,"4":16560,"5":3720},"mean":2.2717041800643085,"max":5,"unreachable":0,"allHist":{"1":44640,"2":245640,"3":952560,"4":2696280,"5":5388960,"6":7218960,"7":5976120,"8":2505960,"9":363120,"10":4320},"allMean":5.8917065933339,"allMax":10},"ends":{"hist":{"1":36960,"2":51600,"3":39720,"4":17160,"5":3840},"mean":2.32556270096463,"max":5,"unreachable":0,"allHist":{"1":41280,"2":203040,"3":733440,"4":2010240,"5":4146480,"6":6246720,"7":6376680,"8":4003920,"9":1393680,"10":226320,"11":14400,"12":360},"allMean":6.32127028227445,"allMax":12}}}};
+const SUBSETS = {"keys":["indent","outdent","outdentAlone","up","down","upLeave","downLeave","top","bottom"],"n3":"0000000000101010001010100010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101000101010001010100010101000101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010001010100010101000101010001010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010100010101000101010001010100010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101","n4":"0000000000101010001010100010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101000101010001010100010101000101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010001010100010101000101010001010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010100010101000101010001010100010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101","n5":{"indent+outdent+up":true,"indent+outdent+down":true,"indent+upLeave":true,"indent+downLeave":true,"indent+outdentAlone+up":true,"indent+outdent+top":true,"indent+up+down":false,"indent+outdent":false,"outdent+up+down":false,"indent+outdent+up+down":true}};
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const KEYNAME = { indent: "indent", outdent: "outdent", outdentAlone: "outdent alone", up: "up", down: "down", upLeave: "up, leaving the list", downLeave: "down, leaving the list", top: "to top", bottom: "to bottom" };
+const KEYCAP = { indent: "Tab", outdent: "⇧Tab", outdentAlone: "outdent alone", up: "up", down: "down", upLeave: "up (leaves)", downLeave: "down (leaves)", top: "to top", bottom: "to bottom" };
+const ALLKEYS = Object.keys(KEYNAME);
+const SETNAME = { four: "today’s four keys", alone: "outdent leaves its later siblings", leave: "up and down also leave the list", ends: "four keys and to top, to bottom" };
+const PCT = x => Math.round(100 * x) + "%";
+
+// ---- numbers in the text ----
+function stat(key) {
+  const [what, n, set] = key.split(":");
+  if (what === "states") return STATS[n].states.toLocaleString("en-US");
+  if (what === "pairs") return STATS[n].pairs.toLocaleString("en-US");
+  if (what === "sets") return [...SUBSETS.n4].filter(c => c === "1").length;
+  const s = STATS[n].sets[set];
+  const h = s.hist, tot = Object.values(h).reduce((a, b) => a + b, 0);
+  if (what === "mean") return s.mean.toFixed(1);
+  if (what === "mean2") return s.mean.toFixed(2);
+  if (what === "max") return s.max;
+  if (what === "amean") return s.allMean.toFixed(1);
+  if (what === "amax") return s.allMax;
+  if (what === "share1") return PCT((h[1] || 0) / tot);
+  if (what === "share45") return PCT(((h[4] || 0) + (h[5] || 0)) / tot);
+}
+document.querySelectorAll("[data-s]").forEach(el => { el.textContent = stat(el.dataset.s); });
+
+// ---- the model in the browser ----
+const CACHE = {};
+function space(n) {
+  if (!CACHE[n]) { const S = R.states(n); CACHE[n] = { S, idx: new Map(S.map((t, i) => [X.sig(t), i])), tables: {} }; }
+  return CACHE[n];
+}
+function table(n, key) { const sp = space(n); if (!sp.tables[key]) sp.tables[key] = R.keyEdges(sp.S, sp.idx, key); return sp.tables[key]; }
+const depthOf = t => { let d = 0; for (const id of X.order(t)) d = Math.max(d, X.depth(t, id)); return d; };
+const outlineText = t => X.lines(t).map(l => "  ".repeat(l.depth) + "- " + l.text);
+function glyph(t, title, extra) {
+  return `<div class="glyph"><div class="gh"><span>${esc(title)}</span><span>${extra || ""}</span></div><div class="ol">${outlineText(t).map(l => `<div>${esc(l)}</div>`).join("")}</div></div>`;
+}
+function startState(n, kind) {
+  const ids = "abcde".slice(0, n).split("");
+  const forest = kind === "flat" ? ids.map(i => [i, i, []]) : kind === "chain" ? (f => f(0))(function f(k) { return k >= n ? [] : [[ids[k], ids[k], f(k + 1)]]; }) : [[ids[0], ids[0], ids.slice(1, n - 1).map(i => [i, i, []])]].concat(n > 2 ? [[ids[n - 1], ids[n - 1], []]] : []);
+  return X.sig(X.fromForest(forest));
+}
+
+// ---- Figure 1: the map ----
+const M = { n: 4, keys: new Set(["indent", "outdent", "up", "down"]), start: null, startKind: "flat", sel: null, hover: null, res: null, pos: null, color: "depth" };
+const cv = $("#m-cv"), ctx = cv.getContext("2d");
+function colours() { const cs = getComputedStyle(document.documentElement); const g = k => cs.getPropertyValue(k).trim(); return { d: [0, 1, 2, 3, 4].map(i => g("--d" + i)), ink: g("--ink"), muted: g("--muted"), rule: g("--rule"), bg: g("--bg"), view: g("--view") }; }
+function buildControls() {
+  $("#m-n").innerHTML = [3, 4, 5].map(n => `<button class="btn" data-n="${n}" aria-pressed="${n === M.n}">${n}</button>`).join("");
+  $("#m-n").querySelectorAll("button").forEach(b => b.onclick = () => { M.n = +b.dataset.n; M.sel = null; M.start = null; run(); });
+  $("#m-keys").innerHTML = ALLKEYS.map(k => `<button class="chip-btn" data-k="${k}" aria-pressed="${M.keys.has(k)}">${KEYCAP[k]}</button>`).join("");
+  $("#m-keys").querySelectorAll("button").forEach(b => b.onclick = () => { M.keys.has(b.dataset.k) ? M.keys.delete(b.dataset.k) : M.keys.add(b.dataset.k); M.sel = null; run(); });
+  $("#m-start").innerHTML = [["flat", "a flat list"], ["nest", "one bullet with children"], ["chain", "a chain"]].map(([k, nm]) => `<button class="btn" data-s="${k}" aria-pressed="${M.startKind === k && M.start == null}">${nm}</button>`).join("") + `<button class="btn" id="m-use" disabled>use the selected outline</button>`;
+  $("#m-start").querySelectorAll("button[data-s]").forEach(b => b.onclick = () => { M.startKind = b.dataset.s; M.start = null; M.sel = null; run(); });
+  $("#m-use").onclick = () => { if (M.sel != null) { M.start = M.sel; M.sel = null; run(); } };
+  const SETS = { "today’s four": ["indent", "outdent", "up", "down"], "up and down leave": ["indent", "outdent", "upLeave", "downLeave"], "two keys": ["indent", "upLeave"], "four and top/bottom": ["indent", "outdent", "up", "down", "top", "bottom"] };
+  $("#m-sets").innerHTML = Object.entries(SETS).map(([nm, ks]) => `<button class="btn" data-set="${ks.join(",")}">${nm}</button>`).join("");
+  $("#m-sets").querySelectorAll("button").forEach(b => b.onclick = () => { M.keys = new Set(b.dataset.set.split(",")); M.sel = null; run(); });
+}
+function refreshControls() {
+  $("#m-n").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.n === M.n)));
+  $("#m-keys").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(M.keys.has(b.dataset.k))));
+  $("#m-start").querySelectorAll("button[data-s]").forEach(b => b.setAttribute("aria-pressed", String(M.start == null && M.startKind === b.dataset.s)));
+  $("#m-use").disabled = M.sel == null || M.sel === M.res.start;
+}
+function run() {
+  const sp = space(M.n), keys = ALLKEYS.filter(k => M.keys.has(k));
+  keys.forEach(k => table(M.n, k));
+  const start = M.start != null && M.start < sp.S.length ? M.start : sp.idx.get(startState(M.n, M.startKind));
+  const r = R.bfsKeys(sp.S, sp.tables, keys, start);
+  M.res = r; M.res.start = start; M.res.keys = keys;
+  layout(); refreshControls(); draw(); info();
+}
+function layout() {
+  const { S } = space(M.n), r = M.res, n = S.length;
+  const size = new Int32Array(n), kids = Array.from({ length: n }, () => []);
+  for (let i = r.order.length - 1; i >= 0; i--) { const v = r.order[i]; size[v] += 1; const p = r.prev[v]; if (p >= 0) { size[p] += size[v]; kids[p].push(v); } }
+  for (const k of kids) k.reverse();
+  const maxD = Math.max(1, ...r.order.map(v => r.d[v]));
+  const pos = new Float32Array(n * 2), a0 = new Float64Array(n), a1 = new Float64Array(n);
+  a0[r.start] = 0; a1[r.start] = 2 * Math.PI;
+  for (const v of r.order) {
+    const mid = (a0[v] + a1[v]) / 2, rad = v === r.start ? 0 : 0.46 * Math.pow(r.d[v] / maxD, 0.85) + 0.02;
+    pos[2 * v] = Math.cos(mid) * rad; pos[2 * v + 1] = Math.sin(mid) * rad;
+    let a = a0[v]; const span = a1[v] - a0[v], tot = size[v] - 1 || 1;
+    for (const c of kids[v]) { a0[c] = a; a1[c] = a + span * size[c] / tot; a += span * size[c] / tot; }
+  }
+  M.pos = pos; M.maxD = maxD;
+}
+function draw() {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (!W) return;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const c = colours(), { S } = space(M.n), r = M.res, pos = M.pos, cx = W / 2, cy = H / 2, sc = W;
+  const P = v => [cx + pos[2 * v] * sc, cy + pos[2 * v + 1] * sc];
+  ctx.strokeStyle = c.rule; ctx.lineWidth = 1;
+  for (let k = 1; k <= M.maxD; k++) { ctx.beginPath(); ctx.arc(cx, cy, (0.46 * Math.pow(k / M.maxD, 0.85) + 0.02) * sc, 0, 7); ctx.stroke(); }
+  if (r.order.length <= 400) { ctx.globalAlpha = 0.35; ctx.strokeStyle = c.muted; ctx.beginPath(); for (const v of r.order) if (r.prev[v] >= 0) { const [x, y] = P(r.prev[v]), [x2, y2] = P(v); ctx.moveTo(x, y); ctx.lineTo(x2, y2); } ctx.stroke(); ctx.globalAlpha = 1; }
+  const rad = r.order.length > 1500 ? 1.7 : r.order.length > 200 ? 3.2 : 5.5;
+  for (const v of r.order) { const [x, y] = P(v), dd = Math.min(4, depthOf(S[v])); ctx.fillStyle = c.d[dd]; ctx.beginPath(); ctx.arc(x, y, rad, 0, 7); ctx.fill(); }
+  const path = M.sel != null ? pathTo(M.sel) : [];
+  if (path.length) { ctx.strokeStyle = c.ink; ctx.lineWidth = 2.2; ctx.beginPath(); path.forEach((v, i) => { const [x, y] = P(v); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); }
+  const ring = (v, w) => { const [x, y] = P(v); ctx.strokeStyle = c.ink; ctx.lineWidth = w; ctx.beginPath(); ctx.arc(x, y, rad + 3, 0, 7); ctx.stroke(); };
+  ring(r.start, 2.5); if (M.sel != null) ring(M.sel, 2.5); if (M.hover != null && M.hover !== M.sel) ring(M.hover, 1.2);
+  M.P = P;
+}
+function pathTo(v) { const r = M.res, out = []; for (let u = v; u >= 0; u = r.prev[u]) out.push(u); return out.reverse(); }
+function pick(ev) {
+  const rect = cv.getBoundingClientRect(), x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+  let best = null, bd = 14 * 14;
+  for (const v of M.res.order) { const [px, py] = M.P(v), d = (px - x) ** 2 + (py - y) ** 2; if (d < bd) { bd = d; best = v; } }
+  return best;
+}
+cv.addEventListener("mousemove", ev => { const v = pick(ev); if (v !== M.hover) { M.hover = v; draw(); info(); } });
+cv.addEventListener("mouseleave", () => { M.hover = null; draw(); info(); });
+cv.addEventListener("click", ev => { const v = pick(ev); M.sel = v === M.sel ? null : v; refreshControls(); draw(); info(); });
+function info() {
+  const { S } = space(M.n), r = M.res, N = S.length, reach = r.order.length;
+  const mean = r.order.length > 1 ? r.order.reduce((a, v) => a + r.d[v], 0) / (reach - 1) : 0;
+  $("#m-stat").innerHTML = `<b>${reach.toLocaleString("en-US")}</b> of <b>${N.toLocaleString("en-US")}</b> outlines can be reached (${PCT(reach / N)}). Farthest: <b>${M.maxD}</b> presses. Average: <b>${mean.toFixed(1)}</b>.`;
+  const hist = {}; for (const v of r.order) hist[r.d[v]] = (hist[r.d[v]] || 0) + 1;
+  const mx = Math.max(...Object.values(hist));
+  $("#m-ring").innerHTML = Object.keys(hist).map(Number).sort((a, b) => a - b).map(d => `<div class="r"><span>${d} press${d === 1 ? "" : "es"}</span><span class="bar" style="width:${Math.max(1, 100 * hist[d] / mx)}%"></span><span class="c">${hist[d].toLocaleString("en-US")}</span></div>`).join("");
+  const c = colours();
+  $("#m-legend").innerHTML = ["flat", "1 level", "2 levels", "3 levels", "4 levels"].slice(0, M.n).map((nm, i) => `<span><i style="background:${c.d[i]}"></i>${nm}</span>`).join("");
+  let h = glyph(S[r.start], "start", "0 presses");
+  const show = M.hover != null && M.sel == null ? M.hover : M.sel;
+  if (show != null && show !== r.start) {
+    const path = pathTo(show);
+    h += glyph(S[show], M.sel != null ? "selected" : "pointing at", `${r.d[show]} press${r.d[show] === 1 ? "" : "es"}`);
+    h += `<div class="path">` + path.slice(1).map(v => { const [k, id] = r.via[v]; return `<div class="step"><span class="k">${esc(KEYCAP[k])} on ${esc(id)}</span>${glyph(S[v], "after press " + r.d[v], "")}</div>`; }).join("") + `</div>`;
+  } else if (!reach || reach === 1) h += `<div class="statline">With these keys nothing can move from here.</div>`;
+  else h += `<div class="statline">Tap or point at a dot.</div>`;
+  $("#m-info").innerHTML = h;
+}
+
+// ---- Figure 2: one move ----
+const H = { n: 5, what: "one" };
+function renderBars() {
+  $("#h-n").innerHTML = [3, 4, 5].map(n => `<button class="btn" data-n="${n}" aria-pressed="${n === H.n}">${n}</button>`).join("");
+  $("#h-n").querySelectorAll("button").forEach(b => b.onclick = () => { H.n = +b.dataset.n; renderBars(); });
+  $("#h-what").innerHTML = [["one", "moving one bullet"], ["all", "turning any outline into any other"]].map(([k, nm]) => `<button class="btn" data-w="${k}" aria-pressed="${k === H.what}">${nm}</button>`).join("");
+  $("#h-what").querySelectorAll("button").forEach(b => b.onclick = () => { H.what = b.dataset.w; renderBars(); });
+  const rows = Object.keys(SETNAME).map(k => ({ k, nm: SETNAME[k], s: STATS[H.n].sets[k] }));
+  const hist = r => H.what === "one" ? r.s.hist : r.s.allHist;
+  const maxp = Math.max(...rows.map(r => Math.max(...Object.keys(hist(r)).map(Number))));
+  const bins = Math.min(maxp, 12);
+  const col = p => p <= 5 ? "p" + p : "p5";
+  $("#h-legend").innerHTML = Array.from({ length: bins }, (_, i) => i + 1).map(p => `<span><i class="sw ${col(p)}"></i>${p}${p === bins && maxp > bins ? "+" : ""}</span>`).join("");
+  $("#h-legend").insertAdjacentHTML("afterbegin", "<span>presses to reach the outline:</span>");
+  const bar = (r) => { const h = hist(r), tot = Object.values(h).reduce((a, b) => a + b, 0); return Array.from({ length: bins }, (_, i) => i + 1).map(p => { const c = p === bins ? Object.entries(h).filter(([k]) => +k >= bins).reduce((a, [, v]) => a + v, 0) : (h[p] || 0); return c ? `<i class="${col(p)}" style="width:${100 * c / tot}%" title="${p}${p === bins && maxp > bins ? "+" : ""} presses: ${c.toLocaleString("en-US")}"></i>` : ""; }).join(""); };
+  $("#h-bars").innerHTML = rows.map(r => `<div class="hrow${r.k === "four" || r.k === "leave" ? " d18" : ""}"><div class="nm">${r.nm}<small>${r.k === "four" ? "refused at a list’s end (#223)" : r.k === "leave" ? "the key changes" : ""}</small></div><div class="track">${bar(r)}</div><div class="mean">${(H.what === "one" ? r.s.mean : r.s.allMean).toFixed(1)}</div></div>`).join("") + (H.what === "one" ? `<div class="hrow d18"><div class="nm">a command with a typed destination<small>the addressed command</small></div><div class="track"><i class="p1" style="width:100%"></i></div><div class="mean">1.0</div></div>` : "");
+  $("#h-cap").innerHTML = `<b>Figure 2.</b> ${H.what === "one" ? `Presses needed to move one bullet, with its children, to any other place in an outline of ${H.n} bullets, over all ${STATS[H.n].pairs.toLocaleString("en-US")} (outline, new outline) pairs.` : `Presses needed to turn any outline of ${H.n} bullets into any other (${(STATS[H.n].states * (STATS[H.n].states - 1)).toLocaleString("en-US")} ordered pairs).`} The number at the right is the average. The command with a typed destination is one command by definition and is not counted by the model. <span class="tag measured">measured</span>`;
+}
+
+// ---- Figure 3: which keys ----
+function strong(n, keys) {
+  const sp = space(n); keys.forEach(k => table(n, k));
+  const f = R.bfsKeys(sp.S, sp.tables, keys, 0); if (f.order.length !== sp.S.length) return { ok: false, fwd: f.order.length };
+  const rev = sp.S.map(() => []); for (const k of keys) sp.tables[k].forEach((e, u) => { for (const [v] of e) rev[v].push(u); });
+  const seen = new Uint8Array(sp.S.length); const q = [0]; seen[0] = 1; for (let h = 0; h < q.length; h++) for (const v of rev[q[h]]) if (!seen[v]) { seen[v] = 1; q.push(v); }
+  return { ok: seen.every(x => x), fwd: f.order.length };
+}
+function renderKeys() {
+  const four = ["indent", "outdent", "up", "down"], rows = [];
+  for (let mask = 15; mask >= 1; mask--) rows.push(four.filter((_, i) => mask & (1 << i)));
+  rows.sort((a, b) => b.length - a.length);
+  const N = space(4).S.length;
+  $("#k-table").innerHTML = `<thead><tr><th>keys</th><th>every outline from every other</th><th>outlines reached from a flat list</th></tr></thead><tbody>` + rows.map(ks => { const s = strong(4, ks); return `<tr><td>${ks.map(k => KEYCAP[k]).join(" + ")}</td><td class="${s.ok ? "y" : "n"}">${s.ok ? "yes" : "no"}</td><td>${s.fwd} of ${N}</td></tr>`; }).join("") + "</tbody>";
+  const bits = SUBSETS.n4, good = [...bits].map((c, i) => c === "1" ? i + 1 : 0).filter(Boolean);
+  const keysOf = m => SUBSETS.keys.filter((_, i) => m & (1 << i));
+  const minimal = good.filter(m => !good.some(o => o !== m && (o & m) === o));
+  const mm = minimal.map(m => keysOf(m).map(k => KEYCAP[k]).join(" + "));
+  $("#k-note").innerHTML = `Over all nine keys, <b>${good.length}</b> of the 511 non-empty sets reach every outline from every other (the same count for three and for four bullets). The sets that stop working when any key is removed are: ${mm.map(s => "<code>" + esc(s) + "</code>").join("; ")}. <span class="tag measured">measured</span> Every set that works contains indent. With indent and outdent, move up and move down each complete the set, and neither does without both. A move that leaves the list makes outdent unnecessary: it can take a bullet out of its parent, which is what outdent is needed for. <span class="tag inferred">inferred</span>`;
+}
+
+buildControls(); run(); renderBars(); renderKeys();
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { draw(); }, 80); });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { draw(); info(); });
+new MutationObserver(() => { draw(); info(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
+
+<script>
+(() => {
+  if (window.self === window.top) return
+  const el = location.hash.length > 1 && document.getElementById(location.hash.slice(1))
+  if (!el) return
+  for (let n = el; n !== document.body; n = n.parentElement) {
+    for (const s of n.parentElement.children)
+      if (s !== n && !/^(SCRIPT|STYLE)$/.test(s.tagName)) s.style.setProperty("display", "none", "important")
+    n.style.margin = "0"; n.style.padding = "0"; n.style.maxWidth = "none"
+  }
+  document.body.style.margin = "0"; document.body.style.padding = "8px"
+  scrollTo(0, 0)
+})()
+</script>
