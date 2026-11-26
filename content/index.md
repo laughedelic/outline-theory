@@ -11,6 +11,7 @@ The series is by [laughedelic](https://github.com/laughedelic) and grew out of t
 
 ## Posts
 
+- [[what-outline-theory-is-about|What Outline Theory is about]]: start here.
 - [[four-keys-reach-every-outline|Four keys reach every outline]]
 
 ## Interactive pages

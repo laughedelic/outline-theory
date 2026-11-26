@@ -1,6 +1,6 @@
 ---
 title: Four keys reach every outline
-date: 2026-11-25
+date: 2026-11-27
 description: Indent, outdent, move up and move down connect every arrangement of five bullets. We counted how many presses each rearrangement takes.
 tags:
   - keyboard
